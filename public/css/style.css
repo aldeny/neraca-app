@@ -1,0 +1,241 @@
+* {
+    font-family: "Quicksand", sans-serif;
+}
+
+a:hover {
+    color: #3f3f46;
+    text-decoration: none;
+}
+
+.ext {
+    padding: 7rem 2rem;
+}
+
+.e-ext {
+    padding: 3rem 3rem;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.erobot-announ {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background: rgb(248, 233, 213);
+    text-align: center;
+}
+
+/* Login Page */
+/* .container-login {
+    background-image: url("../img/login.svg");
+    background-size: contain, cover;
+    background-repeat: no-repeat;
+} */
+
+/* Navbar */
+nav {
+    box-shadow: 0 2px 12px 0 rgb(36 50 66 / 15%);
+}
+
+.navbar-brand img {
+    width: auto;
+}
+
+.navbar-nav a {
+    text-decoration: none;
+}
+
+.navbar-nav a.btn-custom-outline {
+    text-decoration: none;
+}
+
+.nav-item {
+    margin-right: 20px;
+    color: #333;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.btn-custom {
+    padding: 8px 24px;
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-custom-outline {
+    padding: 8px 24px;
+    border: 1px solid #dc3545;
+}
+
+/* .btn-custom::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: block;
+    border: 1px solid #fff;
+    opacity: 0;
+    border-radius: 1.5px;
+    transition: all 0.1s ease-in-out;
+} */
+
+.btn-custom:hover {
+    cursor: pointer;
+    color: #fff;
+    background-color: #eb3043;
+}
+
+.btn-custom-outline:hover {
+    cursor: pointer;
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Herro Section */
+.text-banner {
+    padding-top: 70px;
+}
+
+.herro-text {
+    font-weight: 700;
+}
+
+.img-herro {
+    display: block;
+    margin: auto;
+    width: 70%;
+}
+
+/* Online Class */
+.text-header h3 {
+    font-weight: bold;
+}
+
+/* Why E-robot */
+.erobot-banner .erobot-text-banner {
+    padding-bottom: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.erobot-triger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    color: #3f3f46;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.accor-text {
+    font-weight: 600;
+}
+
+.btn-block:hover {
+    color: #eb3043;
+}
+
+.alt {
+    padding-left: 50px;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+/* Steam */
+.e-steam {
+    padding-bottom: 5px;
+    color: #fff;
+    font-weight: 900;
+    letter-spacing: 20px;
+}
+
+.e-steam-text {
+    color: #fff;
+    font-size: 24px;
+}
+
+/* Supported by */
+.card-sup {
+    border: none;
+}
+
+.support {
+    max-height: 150px;
+}
+.support .img-sup {
+    max-height: 80px;
+    max-width: 80px;
+}
+
+/* Footer */
+.footer {
+    background-color: #cfcff7;
+}
+
+.media .media-body a {
+    text-decoration: none;
+    color: black;
+}
+
+.footer h5 {
+    color: #eb3043;
+}
+
+@media (max-width: 991.98px) {
+    .ext {
+        padding: 2rem 2rem;
+    }
+
+    /* Herro Section */
+    .text-banner {
+        padding-top: 30px;
+    }
+
+    .container-herro .row {
+        flex-wrap: wrap-reverse;
+    }
+
+    .herro-text {
+        font-size: 24px;
+    }
+
+    .img-herro {
+        width: 75%;
+    }
+
+    /* Why E-robot */
+    .erobot-banner .erobot-text-banner {
+        font-size: 24px;
+    }
+
+    .erobot-triger {
+        padding: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .accor-text {
+        font-weight: 200;
+        font-size: 16px;
+    }
+
+    .alt {
+        font-weight: 200;
+        font-size: 14px;
+    }
+
+    /* Steam */
+    .e-steam {
+        letter-spacing: 10px;
+    }
+
+    .e-steam-text {
+        font-size: 12px;
+    }
+
+    /* E-robot Plus */
+}
