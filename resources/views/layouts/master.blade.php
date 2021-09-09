@@ -96,7 +96,7 @@
       <!-- /.navbar -->
 
       <!-- Main Sidebar Container -->
-      <aside class="main-sidebar sidebar-light-danger elevation-4">
+      <aside class="main-sidebar sidebar-dark-danger elevation-4">
         <!-- Brand Logo -->
         <a href="{{ route('index') }}" class="brand-link">
           <img
@@ -135,8 +135,8 @@
                     </p>
                 </a>
                 </li>
-                <li class="nav-item {{ Route::is('kas_bank') ? 'menu-is-opening menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Route::is('kas_bank') ? 'active' : '' }}">
+                <li class="nav-item {{ Route::is('kas_bank') ? 'menu-is-opening menu-open' : '' }} || {{ Route::is('kas_besar') ? 'menu-is-opening menu-open' : '' }} || {{ Route::is('kas_kecil') ? 'menu-is-opening menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Route::is('kas_bank') ? 'active' : ''}} || {{ Route::is('kas_besar') ? 'active' : '' }} || {{ Route::is('kas_kecil') ? 'active' : '' }}">
                       <i class="nav-icon fas fa-money-bill-alt"></i>
                       <p>
                         Neraca
@@ -150,8 +150,8 @@
                           <p>Kas Bank</p>
                         </a>
                       </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
+                      <li class="nav-item a">
+                        <a href="{{ route('kas_besar') }}" class="nav-link {{ Route::is('kas_besar') ? 'active' : '' }}">
                             <i class="fas fa-file-invoice nav-icon"></i>
                             <p>
                             Kas Besar
@@ -159,7 +159,7 @@
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('kas_kecil') }}" class="nav-link {{ Route::is('kas_kecil') ? 'active' : '' }}">
                             <i class="fas fa-file-invoice nav-icon"></i>
                             <p>
                             Kas Kecil
@@ -167,22 +167,53 @@
                         </a>
                       </li>
                     </ul>
-                  </li>
-                <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-user-alt"></i>
-                    <p>
-                    Karyawan
-                    </p>
-                </a>
+                </li>
+                <li class="nav-item ">
+                    <a href="#" class="nav-link">
+                      <i class="nav-icon fas fa-money-bill-alt"></i>
+                      <p>
+                        Arus Kas
+                        <i class="right fas fa-angle-left"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                          <i class="fas fa-user-graduate nav-icon"></i>
+                          <p>Penujualan</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                          <i class="fas fa-user-graduate nav-icon"></i>
+                          <p>Pembelian</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-file-invoice nav-icon"></i>
+                            <p>
+                            Aset
+                            </p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-file-invoice nav-icon"></i>
+                            <p>
+                            Karyawan
+                            </p>
+                        </a>
+                      </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
-                <a href="{{ route('index_bank') }}" class="nav-link">
-                    <i class="nav-icon fas fa-university"></i>
-                    <p>
-                    Bank
-                    </p>
-                </a>
+                    <a href="{{ route('index_bank') }}" class="nav-link">
+                        <i class="nav-icon fas fa-university"></i>
+                        <p>
+                        Bank
+                        </p>
+                    </a>
                 </li>
             </ul>
           </nav>

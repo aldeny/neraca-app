@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Kas Bank')
+@section('title', 'Kas Besar')
 
 @section('konten')
 <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Kas Bank</h1>
+          <h1 class="m-0">Kas Besar</h1>
         </div>
         <!-- /.col -->
       </div>
@@ -73,52 +73,6 @@
                 </div>
             </div>
         </section>
-
-        {{-- DataTables Dana Keluar--}}
-        {{-- <section id="configuration">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <button id="btn-add-keluar" class="btn btn-info"><i class="fas fa-plus-circle"></i> Tambah Data</button>
-                        </div>
-                        <div class="card-content collapse show">
-                            <div class="card-body card-dashboard">
-                            <p class="card-text"></p>
-                                <div class="table-responsive">
-                                <table id="tbl_kas_keluar" class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Tanggal</th>
-                                        <th>Dana</th>
-                                        <th>Sumber Dana</th>
-                                        <th>Bank</th>
-                                        <th>Jumlah</th>
-                                        <th>Keterangan</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Tanggal</th>
-                                        <th>Dana</th>
-                                        <th>Sumber Dana</th>
-                                        <th>Bank</th>
-                                        <th>Jumlah</th>
-                                        <th>Keterangan</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section> --}}
     </div>
 </section>
 
@@ -211,7 +165,6 @@
         <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
 
-
 <script>
     $(document).ready(function(){
         // $('.jum').mask('000.000.000', {reverse:true});
@@ -246,7 +199,7 @@
                 url: '{{ asset('json/bhsTable.json') }}'
             },
             ajax: {
-                url: '{{ route('getData') }}'
+                url: '{{ route('getDataBigCash') }}'
             },
             columns: [{
                 "data" : null, "sortable" : false,
@@ -274,7 +227,7 @@
         $('#id').val('');
         $('#tanggal').val('');
         $('#dana').val('Masuk');
-        $('#sumber_dana').val('Kas Bank');
+        $('#sumber_dana').val('Kas Besar');
         $('#bank_id').val('');
         $('#jumlah').val('');
         $('#keterangan').val('');

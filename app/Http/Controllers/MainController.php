@@ -13,14 +13,26 @@ class MainController extends Controller
 
     public function index()
     {
-        return view('admin.index');
+        $count = Cash::all()->sum('jumlah');
+        $coun = "Rp. ".number_format($count,0,',','.');
+
+        $bank = Cash::where('sumber_dana', '=', 'Kas Bank')->sum('jumlah');
+        $coun_bank = "Rp. ".number_format($bank,0,',','.');
+
+        $kas_besar = Cash::where('sumber_dana', '=', 'Kas Besar')->sum('jumlah');
+        $coun_besar = "Rp. ".number_format($kas_besar,0,',','.');
+
+        $kas_kecil = Cash::where('sumber_dana', '=', 'Kas Kecil')->sum('jumlah');
+        $coun_kecil = "Rp. ".number_format($kas_kecil,0,',','.');
+
+        return view('admin.index', ['count_bank' => $coun_bank, 'count' => $coun, 'count_besar' => $coun_besar, 'count_kecil' => $coun_kecil]);
     }
 
     public function getIndexKasBank()
     {
-        $count = Cash::all()->sum('jumlah');
+        $count = Cash::where('sumber_dana', '=', 'Kas Bank')->sum('jumlah');
         $bank = Bank::all();
-        $coun = "Rp. ".number_format($count,2,',','.');
+        $coun = "Rp. ".number_format($count,0,',','.');
         return view('admin.kas_bank', ['count' => $coun, 'bank' => $bank]);
     }
 
@@ -56,9 +68,10 @@ class MainController extends Controller
     /* Data Masuk */
     public function getDataCash()
     {
-        $data = Cash::where('dana', '=', 'Masuk')
-                    //->orWhere('dana', '=', 'Keluar')
+        $data = Cash::Where('sumber_dana', '=', 'Kas Bank')
                     ->get();
+
+        //$data = Cash::all();
 
         if (request()->ajax()) {
             return datatables()->of($data)
@@ -67,81 +80,19 @@ class MainController extends Controller
                 return $dt;
             })
             ->addColumn('dana', function($data){
-                return $data -> dana;
+                $sd = "<small class='badge badge-success'>".$data->dana."</small>";
+                return $sd;
             })
             ->addColumn('sumber_dana', function($data){
-                $kas1 = 'Kas Bank';
-                $kas2 = 'Kas Besar';
-                $kas3 = 'Kas Kecil';
-                if ($data->sumber_dana == 1) {
-                    return $kas1;
-                } elseif ($data->sumber_dana == 2) {
-                    return $kas2;
-                }else{
-                    return $kas3;
-                }
-
+                $sd = $data->sumber_dana;
+                return $sd;
             })
             ->addColumn('bank_id', function($data){
                 $dt = $data->bank;
                 return $dt->nama_bank;
             })
             ->addColumn('jumlah', function($data){
-                $dt = "Rp. ".number_format($data->jumlah,2,',','.');
-                return $dt;
-            })
-            ->addColumn('keterangan', function($data){
-                $dt = $data->keterangan;
-                return $dt;
-            })
-            ->addColumn('aksi', function($data){
-                $btn = "<button class='btn btn-danger btn-sm btn-delete' data-id='".$data->id."'>Delete</button>";
-                return $btn;
-            })
-            ->rawColumns(['tanggal_keluar','dana','sumber_dana','bank_id','jumlah','keterangan','aksi'])
-            ->make(true);
-        }
-
-        return view('admin.kas_bank',
-            [
-                'data'    => $data,
-            ]);
-    }
-
-    /* Data Keluar */
-    public function getDataCashOut()
-    {
-        $data = Cash::where('dana', '=', 'Keluar')
-                    ->get();
-
-        if (request()->ajax()) {
-            return datatables()->of($data)
-            ->addColumn('tanggal', function($data){
-                $dt = $data->tanggal ? with(new Carbon($data->tanggal))->format('d-M-Y') : '';
-                return $dt;
-            })
-            ->addColumn('dana', function($data){
-                return $data -> dana;
-            })
-            ->addColumn('sumber_dana', function($data){
-                $kas1 = 'Kas Bank';
-                $kas2 = 'Kas Besar';
-                $kas3 = 'Kas Kecil';
-                if ($data->sumber_dana == 1) {
-                    return $kas1;
-                } elseif ($data->sumber_dana == 2) {
-                    return $kas2;
-                }else{
-                    return $kas3;
-                }
-
-            })
-            ->addColumn('bank_id', function($data){
-                $dt = $data->bank;
-                return $dt->nama_bank;
-            })
-            ->addColumn('jumlah', function($data){
-                $dt = "Rp. ".number_format($data->jumlah,2,',','.');
+                $dt = "Rp. ".number_format($data->jumlah,0,',','.');
                 return $dt;
             })
             ->addColumn('keterangan', function($data){
@@ -167,5 +118,116 @@ class MainController extends Controller
         $delete = Cash::findOrfail($id);
         $delete->delete();
         return back();
+    }
+
+    /* Kas Besar */
+    public function getIndexKasBesar(){
+        $count = Cash::where('sumber_dana', '=', 'Kas Besar')->sum('jumlah');
+        $bank = Bank::all();
+        $coun = "Rp. ".number_format($count,0,',','.');
+        return view('admin.kas_besar', ['count' => $coun, 'bank' => $bank]);
+    }
+
+    public function getDataKasBesar()
+    {
+        $data = Cash::Where('sumber_dana', '=', 'Kas Besar')
+                    ->get();
+
+        //$data = Cash::all();
+
+        if (request()->ajax()) {
+            return datatables()->of($data)
+            ->addColumn('tanggal', function($data){
+                $dt = $data->tanggal ? with(new Carbon($data->tanggal))->format('d-M-Y') : '';
+                return $dt;
+            })
+            ->addColumn('dana', function($data){
+                $sd = "<small class='badge badge-success'>".$data->dana."</small>";
+                return $sd;
+            })
+            ->addColumn('sumber_dana', function($data){
+                $sd = $data->sumber_dana;
+                return $sd;
+            })
+            ->addColumn('bank_id', function($data){
+                $dt = $data->bank;
+                return $dt->nama_bank;
+            })
+            ->addColumn('jumlah', function($data){
+                $dt = "Rp. ".number_format($data->jumlah,0,',','.');
+                return $dt;
+            })
+            ->addColumn('keterangan', function($data){
+                $dt = $data->keterangan;
+                return $dt;
+            })
+            ->addColumn('aksi', function($data){
+                $btn = "<button class='btn btn-danger btn-sm btn-delete' data-id='".$data->id."'>Delete</button>";
+                return $btn;
+            })
+            ->rawColumns(['tanggal_keluar','dana','sumber_dana','bank_id','jumlah','keterangan','aksi'])
+            ->make(true);
+        }
+
+        return view('admin.kas_bank',
+            [
+                'data'    => $data,
+            ]);
+    }
+
+    /* Kas Kecil */
+    /* Kas Besar */
+    public function getIndexKasKecil(){
+        $count = Cash::where('sumber_dana', '=', 'Kas Kecil')->sum('jumlah');
+        $bank = Bank::all();
+        $coun = "Rp. ".number_format($count,0,',','.');
+        return view('admin.kas_kecil', ['count' => $coun, 'bank' => $bank]);
+    }
+
+    public function getDataKasKecil()
+    {
+        $data = Cash::Where('sumber_dana', '=', 'Kas Kecil')
+                    ->get();
+
+        //$data = Cash::all();
+
+        if (request()->ajax()) {
+            return datatables()->of($data)
+            ->addColumn('tanggal', function($data){
+                $dt = $data->tanggal ? with(new Carbon($data->tanggal))->format('d-M-Y') : '';
+                return $dt;
+            })
+            ->addColumn('dana', function($data){
+                $sd = "<small class='badge badge-success'>".$data->dana."</small>";
+                return $sd;
+            })
+            ->addColumn('sumber_dana', function($data){
+                $sd = $data->sumber_dana;
+                return $sd;
+            })
+            ->addColumn('bank_id', function($data){
+                $dt = $data->bank;
+                return $dt->nama_bank;
+            })
+            ->addColumn('jumlah', function($data){
+                $dt = "Rp. ".number_format($data->jumlah,0,',','.');
+                return $dt;
+            })
+            ->addColumn('keterangan', function($data){
+                $dt = $data->keterangan;
+                return $dt;
+            })
+            ->addColumn('aksi', function($data){
+                $btn = "<button class='btn btn-danger btn-sm btn-delete' data-id='".$data->id."'>Delete</button>";
+                return $btn;
+            })
+            ->rawColumns(['tanggal_keluar','dana','sumber_dana','bank_id','jumlah','keterangan','aksi'])
+            ->make(true);
+        }
+
+        return view('admin.kas_bank',
+            [
+                'data'    => $data,
+            ]);
     }
 }
