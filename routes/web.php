@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\BuyController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Routing\Route as RoutingRoute;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +31,6 @@ Route::get('/index', [MainController::class, 'index'])->name('index');
 Route::get('/kas/bank', [MainController::class, 'getIndexKasBank'])->name('kas_bank');
 Route::post('kas/add', [MainController::class, 'addData']);
 Route::get('/kas/getData', [MainController::class, 'getDataCash'])->name('getData');
-Route::get('/kas/getData/out', [MainController::class, 'getDataCashOut'])->name('getDataOut');
 Route::post('/kas/delete/{id}', [MainController::class, 'deleteId']);
 
 /* Saldo Masuk - Kas Besar */
@@ -39,6 +40,13 @@ Route::get('/kas/getData/BigCash', [MainController::class, 'getDataKasBesar'])->
 /* Saldo Masuk - Kas Besar */
 Route::get('/kas/kecil', [MainController::class, 'getIndexKasKecil'])->name('kas_kecil');
 Route::get('/kas/getData/SmallCash', [MainController::class, 'getDataKasKecil'])->name('getDataSmallCash');
+
+/* Pembelian */
+Route::get('/buy/index', [BuyController::class, 'BuyIndex'])->name('buyIndex');
+Route::post('/buy/addData', [BuyController::class, 'BuyAdd']);
+Route::get('/buy/getData', [BuyController::class, 'BuygetData'])->name('getDataBuy');
+Route::post('/buy/delete/{id}', [BuyController::class, 'deleteIdBuy']);
+
 
 Route::get('/bank/index', [BankController::class, 'index_bank'])->name('index_bank');
 Route::get('/bank/getData', [BankController::class, 'getDataBank'])->name('getDataBank');

@@ -168,8 +168,8 @@
                       </li>
                     </ul>
                 </li>
-                <li class="nav-item ">
-                    <a href="#" class="nav-link">
+                <li class="nav-item {{ Route::is('buyIndex') ? 'menu-is-opening menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Route::is('buyIndex') ? 'active' : '' }}">
                       <i class="nav-icon fas fa-money-bill-alt"></i>
                       <p>
                         Arus Kas
@@ -178,15 +178,15 @@
                     </a>
                     <ul class="nav nav-treeview">
                       <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('buyIndex') }}" class="nav-link {{ Route::is('buyIndex') ? 'active' : '' }}">
                           <i class="fas fa-user-graduate nav-icon"></i>
-                          <p>Penujualan</p>
+                          <p>Pembelian</p>
                         </a>
                       </li>
                       <li class="nav-item">
                         <a href="#" class="nav-link">
                           <i class="fas fa-user-graduate nav-icon"></i>
-                          <p>Pembelian</p>
+                          <p>Peenjualan</p>
                         </a>
                       </li>
                       <li class="nav-item">
@@ -208,7 +208,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('index_bank') }}" class="nav-link">
+                    <a href="{{ route('index_bank') }}" class="nav-link {{ Route::is('buyIndex') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-university"></i>
                         <p>
                         Bank

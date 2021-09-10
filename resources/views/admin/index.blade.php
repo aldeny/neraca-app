@@ -14,60 +14,88 @@
     <!-- /.row -->
 
     {{-- Card Ringkasan --}}
-  <div class="row">
-    <div class="col-md-3 col-sm-6 col-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-info"><i class="fas fa-wallet"></i></span>
-        <div class="info-box-content">
-          <span class="info-box-text">Total Saldo</span>
-          <span class="info-box-number">{{ $count }}</span>
+    <div class="row">
+        <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-info"><i class="fas fa-wallet"></i></span>
+            <div class="info-box-content">
+            <span class="info-box-text">Total Saldo</span>
+            <span class="info-box-number">{{ $count }}</span>
+            </div>
+            <!-- /.info-box-content -->
         </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-success"><i class="fas fa-money-check-alt"></i></span>
-        <div class="info-box-content">
-          <span class="info-box-text">Saldo Kas Bank</span>
-          <span class="info-box-number">{{ $count_bank }}</span>
+        <!-- /.info-box -->
         </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-success"><i class="fas fa-money-bill"></i></span>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-success"><i class="fas fa-money-check-alt"></i></span>
+            <div class="info-box-content">
+            <span class="info-box-text">Saldo Kas Bank</span>
+            <span class="info-box-number">{{ $count_bank }}</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-success"><i class="fas fa-money-bill"></i></span>
 
-        <div class="info-box-content">
-          <span class="info-box-text">Saldo Kas Besar</span>
-          <span class="info-box-number">{{ $count_besar }}</span>
+            <div class="info-box-content">
+            <span class="info-box-text">Saldo Kas Besar</span>
+            <span class="info-box-number">{{ $count_besar }}</span>
+            </div>
+            <!-- /.info-box-content -->
         </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-success"><i class="fas fa-money-bill-alt"></i></span>
+        <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-success"><i class="fas fa-money-bill-alt"></i></span>
 
-        <div class="info-box-content">
-          <span class="info-box-text">Saldo Kas Kecil</span>
-          <span class="info-box-number">{{ $count_kecil }}</span>
+            <div class="info-box-content">
+            <span class="info-box-text">Saldo Kas Kecil</span>
+            <span class="info-box-number">{{ $count_kecil }}</span>
+            </div>
+            <!-- /.info-box-content -->
         </div>
-        <!-- /.info-box-content -->
-      </div>
-      <!-- /.info-box -->
+        <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
     </div>
-    <!-- /.col -->
-  </div>
-  {{-- End Card Ringkasan --}}
-  </div>
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-danger"><i class="fas fa-chart-line"></i></span>
+            <div class="info-box-content">
+            <span class="info-box-text text-danger">Pembelian</span>
+            <span class="info-box-number text-danger">{{ $saldo_buy_ }}</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-6 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-success"><i class="fas fa-money-check-alt"></i></span>
+            <div class="info-box-content">
+            <span class="info-box-text">Saldo Kas Bank</span>
+            <span class="info-box-number">{{ $count_bank }}</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        </div>
+        <!-- /.col -->
+    </div>
+    {{-- End Card Ringkasan --}}
+    </div>
   <!-- /.container-fluid -->
 </div>
 @endsection

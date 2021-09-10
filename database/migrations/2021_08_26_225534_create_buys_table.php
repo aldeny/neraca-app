@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Carbon\CarbonTimeZone;
 
 class CreateBuysTable extends Migration
 {
@@ -17,8 +18,10 @@ class CreateBuysTable extends Migration
             $table->id();
             $table->string('nama_item');
             $table->integer('jumlah_item');
+            $table->integer('saldo');
             $table->integer('harga_beli');
             $table->integer('total');
+            $table->string('keterangan');
             $table->timestamps();
         });
     }

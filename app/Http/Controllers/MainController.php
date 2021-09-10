@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bank;
+use App\Models\Buy;
 use App\Models\Cash;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -13,19 +14,28 @@ class MainController extends Controller
 
     public function index()
     {
-        $count = Cash::all()->sum('jumlah');
-        $coun = "Rp. ".number_format($count,0,',','.');
-
         $bank = Cash::where('sumber_dana', '=', 'Kas Bank')->sum('jumlah');
-        $coun_bank = "Rp. ".number_format($bank,0,',','.');
+        $buy = Buy::where('saldo', '=', 1)->sum('total');
+        $result = $bank-$buy;
+        $coun_bank = "Rp. ".number_format($result,0,',','.');
 
         $kas_besar = Cash::where('sumber_dana', '=', 'Kas Besar')->sum('jumlah');
-        $coun_besar = "Rp. ".number_format($kas_besar,0,',','.');
+        $buy_besar = Buy::where('saldo', '=', 2)->sum('total');
+        $result_besar = $kas_besar - $buy_besar;
+        $coun_besar = "Rp. ".number_format($result_besar,0,',','.');
 
         $kas_kecil = Cash::where('sumber_dana', '=', 'Kas Kecil')->sum('jumlah');
-        $coun_kecil = "Rp. ".number_format($kas_kecil,0,',','.');
+        $buy_kecil = Buy::where('saldo', '=', 3)->sum('total');
+        $result_kecil = $kas_kecil - $buy_kecil;
+        $coun_kecil = "Rp. ".number_format($result_kecil,0,',','.');
 
-        return view('admin.index', ['count_bank' => $coun_bank, 'count' => $coun, 'count_besar' => $coun_besar, 'count_kecil' => $coun_kecil]);
+        $saldo_buy = Buy::all()->sum('total');
+        $saldo_buy_ = "Rp. ".number_format($saldo_buy,0,',','.');
+
+        $total_saldo = $result + $kas_besar + $result_kecil;
+        $coun = "Rp. ".number_format($total_saldo,0,',','.');
+
+        return view('admin.index', ['count_bank' => $coun_bank, 'count' => $coun, 'count_besar' => $coun_besar, 'count_kecil' => $coun_kecil, 'saldo_buy_' => $saldo_buy_]);
     }
 
     public function getIndexKasBank()

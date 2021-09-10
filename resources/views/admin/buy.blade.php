@@ -1,33 +1,31 @@
 @extends('layouts.master')
 
-@section('title', 'Kas Kecil')
+@section('title', 'Pembelian')
 
 @section('konten')
 <div class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1 class="m-0">Kas Kecil</h1>
+        <div class="row mb-4">
+            <div class="col-sm-6">
+                <h1 class="m-0">Pembelian</h1>
+            </div>
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
     </div>
-    <!-- /.container-fluid -->
 </div>
+
 <section class="content">
     <div class="container-fluid">
-        <div class="row justify-content-end">
+        {{-- <div class="row justify-content-end">
             <div class="col-12 col-lg-5 col-md-12 text-center">
             <div class="card bg-success shadow-md">
                 <div class="card-content collapse show" aria-expanded="true">
                 <div class="card-body">
-                    <h2 id="count" class=" text-bold-700 card-text white">{{ $count }}</h2>
+                    <h2 id="count" class=" text-bold-700 card-text white">asd</h2>
                 </div>
                 </div>
             </div>
             </div>
-        </div>
+        </div> --}}
         {{-- DataTables Dana Masuk--}}
         <section id="configuration">
             <div class="row">
@@ -40,15 +38,16 @@
                             <div class="card-body card-dashboard">
                             <p class="card-text"></p>
                                 <div class="table-responsive">
-                                <table id="tbl_kas" class="table table-striped">
+                                <table id="tbl_buy" class="table table-striped">
                                     <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Tanggal</th>
-                                        <th>Dana</th>
-                                        <th>Sumber Dana</th>
-                                        <th>Bank</th>
+                                        <th>Nama Item</th>
                                         <th>Jumlah</th>
+                                        <th>Harga</th>
+                                        <th>Total</th>
+                                        <th>Tanggal</th>
+                                        <th>Saldo</th>
                                         <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -56,11 +55,12 @@
                                     <tfoot>
                                     <tr>
                                         <th>No</th>
-                                        <th>Tanggal</th>
-                                        <th>Dana</th>
-                                        <th>Sumber Dana</th>
-                                        <th>Bank</th>
+                                        <th>Nama Item</th>
                                         <th>Jumlah</th>
+                                        <th>Harga</th>
+                                        <th>Total</th>
+                                        <th>Tanggal</th>
+                                        <th>Saldo</th>
                                         <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -91,44 +91,38 @@
                     @csrf
                     <div class="form-body">
                         <div class="form-group">
-                            <label for="tanggal" class="font-weight-bold">Tanggal</label>
+                            <label for="nama_item" class="font-weight-bold">Nama Item</label>
                             <input type="hidden" name="id" id="id" class="form-control" value="">
                             <input type="hidden" name="action" id="action" class="form-control">
-                            <input type="date" id="tanggal" class="form-control" name="tanggal" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Tanggal Input" data-original-title="" title="">
+                            <input type="text" id="nama_item" class="form-control text-capitalize" name="nama_item" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Nama Item" data-original-title="" title="" placeholder="Nama Item">
                         </div>
                         <div class="form-group">
-                            <label for="dana" class="font-weight-bold">Dana</label>
-                            {{-- <select id="dana" name="dana" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Dana" data-original-title="" title="">
-                            <option value="1">Masuk</option>
-                            <option value="2">Keluar</option>
-                            </select> --}}
-                            <input type="text" class="form-control" id="dana" name="dana" data-placement="top" data-title="Dana" value="masuk" readonly>
+                            <label for="jumlah" class="font-weight-bold">Jumlah Item</label>
+                            <input type="number" class="form-control" id="jumlah_item" name="jumlah_item" data-placement="top" data-title="Jumlah Item" placeholder="Jumlah Item">
                         </div>
                         <div class="form-group">
-                            <label for="sumber-dana" class="font-weight-bold">Sumber Dana</label>
-                            <input type="text" class="form-control" id="sumber_dana" name="sumber_dana" data-placement="top" data-title="Sumber Dana" value="Sumber Dana" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="bank" class="font-weight-bold">Bank</label>
-                            <select id="bank_id" name="bank_id" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Bank" data-original-title="" title="">
-                                <option value="">Pilih Bank</option>
-                                @foreach ($bank as $dt)
-                                    <option value="{{ $dt->id }}">{{ $dt->nama_bank }}</option>
-                                @endforeach
+                            <label for="from_saldo" class="font-weight-bold">Dari Saldo</label>
+                            <select id="saldo" name="saldo" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Bank" data-original-title="" title="">
+                                <option value="">Pilih Saldo</option>
+                                <option value="1">Saldo Kas Bank</option>
+                                <option value="2">Saldo Kas Besar</option>
+                                <option value="3">Saldo Kas Kecil</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="projectinput1" class="font-weight-bold">Jumlah</label>
-                            <div class="input-group">
-                                {{-- <div class="input-group-prepend">
-                                <span class="input-group-text">Rp.</span>
-                                </div> --}}
-                                <input type="text" class="form-control jum" type-currency="IDR" placeholder="Jumlah" aria-label="Amount (to the nearest dollar)" name="jumlah">
-                                {{-- <div class="input-group-append">
-                                <span class="input-group-text">.00</span>
-                                </div> --}}
-                            </div>
-                        </div>
+                        <div class="row">
+                           <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="herga" class="font-weight-bold">Harga Beli</label>
+                                    <input type="number" class="form-control" name="harga_beli" id="harga_beli" placeholder="Harga Beli">
+                                </div>
+                           </div>
+                           <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="total" class="font-weight-bold">Total</label>
+                                    <input type="text" class="form-control jum" aria-label="Amount (to the nearest dollar)" type-currency="IDR" name="total" id="total" readonly>
+                                </div>
+                           </div>
+                       </div>
                         <div class="form-group">
                             <label for="keterangan" class="font-weight-bold">Keterangan</label>
                             <textarea id="keterangan" rows="5" class="form-control" name="keterangan" placeholder="Keterangan" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="keterangan" data-original-title="" title=""></textarea>
@@ -164,6 +158,19 @@
         <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
         <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#jumlah_item, #harga_beli").keyup(function() {
+            var harga  = $("#harga_beli").val();
+            var jumlah = $("#jumlah_item").val();
+
+            var total = parseInt(harga) * parseInt(jumlah);
+            if (!isNaN(total)) {
+                $("#total").val(total);
+            }
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function(){
@@ -190,7 +197,7 @@
 
     /* Datatables Masuk */
     $(document).ready(function () {
-        $('#tbl_kas').DataTable({
+        $('#tbl_buy').DataTable({
             lengthChange: true,
             autoWidth: false,
             serverside: true,
@@ -199,7 +206,7 @@
                 url: '{{ asset('json/bhsTable.json') }}'
             },
             ajax: {
-                url: '{{ route('getDataSmallCash') }}'
+                url: '{{ route('getDataBuy') }}'
             },
             columns: [{
                 "data" : null, "sortable" : false,
@@ -207,13 +214,14 @@
                     return meta.row + meta.settings._iDisplayStart + 1
                 },
             },
-                {data: 'tanggal', name: 'tanggal'},
-                {data: 'dana', name: 'dana'},
-                {data: 'sumber_dana', name: 'sumber_dana'},
-                {data: 'bank_id', name: 'bank_id'},
-                {data: 'jumlah', name: 'jumlah'},
-                {data: 'keterangan', name: 'keterangan'},
-                {data: 'aksi', name: 'aksi'},
+            {data: 'nama_item', name: 'nama_item'},
+            {data: 'jumlah_item', name: 'jumlah_item'},
+            {data: 'harga_beli', name: 'harga_beli'},
+            {data: 'total', name: 'total'},
+            {data: 'tanggal', name: 'tanggal'},
+            {data: 'saldo', name: 'saldo'},
+            {data: 'keterangan', name: 'keterangan'},
+            {data: 'aksi', name: 'aksi'},
             ]
         });
     })
@@ -225,11 +233,10 @@
         $('.btn-action').html('Simpan');
 
         $('#id').val('');
-        $('#tanggal').val('');
-        $('#dana').val('Masuk');
-        $('#sumber_dana').val('Kas Kecil');
-        $('#bank_id').val('');
-        $('#jumlah').val('');
+        $('#nama_item').val('');
+        $('#jumlah_item').val('');
+        $('#harga_beli').val('');
+        $('#total').val('');
         $('#keterangan').val('');
         $('#action').val('tambah');
     });
@@ -242,15 +249,14 @@
 
             $.ajax({
                 method: "POST",
-                url: '/kas/add',
+                url: '/buy/addData',
                 data: new FormData(this),
                 dataType: 'json',
                 contentType: false,
                 cache: false,
                 processData: false,
                 success: function (data) {
-                    $('#tbl_kas').DataTable().ajax.reload();
-                    $('#count').load(' #count');
+                    $('#tbl_buy').DataTable().ajax.reload();
                         if(data.success){
                                 const Toast = Swal.mixin({
                                 toast: true,
@@ -280,15 +286,15 @@
                         $("#id").val("");
                         $('#modal-add').modal('hide');
                         },
-                        error : function (data) {
-                            alert(data);
+                        error : function (error) {
+                            title:error.error
                         }
             });
         }
     });
 
     $(document).on('click', '.btn-delete', function () {
-        var table = $('#tbl_kas').DataTable();
+        var table = $('#tbl_buy').DataTable();
         let id = $(this).data('id');
         //let name = $(this).attr('data-name')
         //alert(id);
@@ -309,7 +315,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "/kas/delete/"+id,
+                    url: "/buy/delete/"+id,
                     data: {
                         "id": id,
                         "_token": token,
@@ -321,7 +327,6 @@
                         'success'
                         )
                         table.ajax.reload();
-                        $('#count').load(' #count');
                         //refreshTable();
                     }
                 });
@@ -332,5 +337,4 @@
 </script>
 
 @endpush
-
 @endsection
