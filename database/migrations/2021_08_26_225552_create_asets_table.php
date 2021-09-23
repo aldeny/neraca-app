@@ -16,8 +16,12 @@ class CreateAsetsTable extends Migration
         Schema::create('asets', function (Blueprint $table) {
             $table->id();
             $table->string('nama_barang');
-            $table->integer('stok_awal');
-            $table->integer('stok_akhir');
+            $table->integer('jumlah');
+            $table->integer('harga');
+            $table->integer('total');
+            $table->string('kondisi');
+            $table->string('gambar');
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

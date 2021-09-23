@@ -94,7 +94,7 @@
                             <label for="nama_item" class="font-weight-bold">Nama Item</label>
                             <input type="hidden" name="id" id="id" class="form-control" value="">
                             <input type="hidden" name="action" id="action" class="form-control">
-                            <input type="text" id="nama_item" class="form-control text-capitalize" name="nama_item" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Nama Item" data-original-title="" title="" placeholder="Nama Item">
+                            <input type="text" id="nama_item" class="form-control" name="nama_item" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Nama Item" data-original-title="" title="" placeholder="Nama Item">
                         </div>
                         <div class="form-group">
                             <label for="jumlah" class="font-weight-bold">Jumlah Item</label>

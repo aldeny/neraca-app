@@ -62,6 +62,9 @@
     <!-- DataTables -->
     {{-- <link rel="stylesheet" type="text/css" href="{{ asset('jquery/jquery.dataTables.css') }}"> --}}
 
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}" type="text/css">
+
   </head>
   <body style="font-family: 'Quicksand', sans-serif;" class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -168,8 +171,8 @@
                       </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ Route::is('buyIndex') ? 'menu-is-opening menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Route::is('buyIndex') ? 'active' : '' }}">
+                <li class="nav-item {{ Route::is('buyIndex') ? 'menu-is-opening menu-open' : '' }} || {{ Route::is('index_assets') ? 'menu-is-opening menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Route::is('buyIndex') ? 'active' : '' }} || {{ Route::is('index_assets') ? 'active' : '' }}">
                       <i class="nav-icon fas fa-money-bill-alt"></i>
                       <p>
                         Arus Kas
@@ -184,13 +187,13 @@
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('index_sell') }}" class="nav-link">
                           <i class="fas fa-user-graduate nav-icon"></i>
-                          <p>Peenjualan</p>
+                          <p>Penjualan</p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('index_assets') }}" class="nav-link {{ Route::is('index_assets') ? 'active' : '' }}">
                             <i class="fas fa-file-invoice nav-icon"></i>
                             <p>
                             Aset
@@ -208,7 +211,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('index_bank') }}" class="nav-link {{ Route::is('buyIndex') ? 'active' : '' }}">
+                    <a href="{{ route('index_bank') }}" class="nav-link {{ Route::is('index_bank') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-university"></i>
                         <p>
                         Bank
@@ -281,6 +284,8 @@
     <script src="{{ asset('dist/js/demo.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
+    <!-- bs-custom-file-input -->
+    <script src="{{ asset('plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
 
     <!-- Aos JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
