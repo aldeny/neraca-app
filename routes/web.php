@@ -3,7 +3,10 @@
 use App\Http\Controllers\AssetsController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\BuyController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SellController;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Routing\Route as RoutingRoute;
@@ -69,4 +72,20 @@ Route::post('/asset/Updateassets', [AssetsController::class, 'UpdateDataassets']
 Route::post('/asset/delete', [AssetsController::class, 'deleteIdAsset'])->name('delete.aset');
 
 /* Karyawan */
-Route::view('/employee/index', 'employee.index');
+Route::get('employee/index', [EmployeeController::class, 'EmployeeIndex'])->name('employee.index');
+
+/* Jabatan */
+Route::get('/position', [PositionController::class, 'PositionIndex'])->name('position.index');
+Route::post('/position/addPosition', [PositionController::class, 'addPosition'])->name('add.position');
+Route::get('/position/getData', [PositionController::class, 'getDataPosition'])->name('getDataPosition');
+Route::get('/position/getData/{id}', [PositionController::class, 'getIdPosition']);
+Route::post('/position/updatePosition', [PositionController::class, 'updatePosition'])->name('update.position');
+Route::post('/position/delete/{id}', [PositionController::class, 'deleteIdPosition']);
+
+/* Product */
+Route::get('/product', [ProductController::class, 'ProductIndex'])->name('product.index');
+Route::post('/product/addProduct', [ProductController::class, 'ProductAdd'])->name('product.add');
+Route::get('/product/getProduct', [ProductController::class, 'getDataProduct'])->name('product.GetData');
+Route::get('/product/getData/{id}', [ProductController::class, 'getIdProduct']);
+Route::post('/product/updateProduct', [ProductController::class, 'updateProduct'])->name('product.add.update');
+Route::post('/product/delete/{id}', [ProductController::class, 'deleteIdProduct']);

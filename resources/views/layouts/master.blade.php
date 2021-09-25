@@ -25,10 +25,14 @@
     />
 
     <!-- Tempusdominus Bootstrap 4 -->
-    {{-- <link
+    <link
       rel="stylesheet"
       href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}"
-    /> --}}
+    />
+
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
@@ -66,7 +70,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}" type="text/css">
 
   </head>
-  <body style="font-family: 'Quicksand', sans-serif;" class="hold-transition sidebar-mini layout-fixed">
+<body style="font-family: 'Quicksand', sans-serif;" class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
       <!-- Navbar -->
       <nav class="main-header navbar navbar-expand navbar-dark navbar-danger">
@@ -138,6 +142,7 @@
                     </p>
                 </a>
                 </li>
+                <li class="nav-header">Keuangan</li>
                 <li class="nav-item {{ Route::is('kas_bank') ? 'menu-is-opening menu-open' : '' }} || {{ Route::is('kas_besar') ? 'menu-is-opening menu-open' : '' }} || {{ Route::is('kas_kecil') ? 'menu-is-opening menu-open' : '' }}">
                     <a href="#" class="nav-link {{ Route::is('kas_bank') ? 'active' : ''}} || {{ Route::is('kas_besar') ? 'active' : '' }} || {{ Route::is('kas_kecil') ? 'active' : '' }}">
                       <i class="nav-icon fas fa-money-bill-alt"></i>
@@ -210,11 +215,28 @@
                       </li>
                     </ul>
                 </li>
+                <li class="nav-header">Data Master</li>
+                <li class="nav-item">
+                    <a href="{{ route('product.index') }}" class="nav-link {{ Route::is('product.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-university"></i>
+                        <p>
+                        Produk
+                        </p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route('index_bank') }}" class="nav-link {{ Route::is('index_bank') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-university"></i>
                         <p>
                         Bank
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('position.index') }}" class="nav-link {{ Route::is('position.index') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-university"></i>
+                        <p>
+                        Jabatan
                         </p>
                     </a>
                 </li>

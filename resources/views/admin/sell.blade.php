@@ -7,7 +7,7 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1 class="m-0">Penjualan <small class="badge badge-danger">Belum Selesai</small></h1>
+					<h1 class="m-0">Penjualan</h1>
 
 				</div>
 			</div>
@@ -83,13 +83,19 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="jumlah_barang" class="font-weight-bold">Jumlah Barang Dijual</label>
-                            <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang" data-placement="top" data-title="Jumlah Barang">
-                        </div>
-                        <div class="form-group">
-                            <label for="harga" class="font-weight-bold">Harga</label>
-                            <input type="number" class="form-control" id="harga" name="harga" data-placement="top" data-title="Harga">
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="jumlah_barang" class="font-weight-bold">Jumlah Barang Dijual</label>
+                                    <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang" data-placement="top" data-title="Jumlah Barang">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="harga" class="font-weight-bold">Harga</label>
+                                    <input type="number" class="form-control" id="harga" name="harga" data-placement="top" data-title="Harga">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="projectinput1" class="font-weight-bold">Total</label>

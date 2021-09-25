@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKasBesarsTable extends Migration
+class CreateProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateKasBesarsTable extends Migration
      */
     public function up()
     {
-        Schema::create('kas_besars', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal');
-            $table->string('dana');
-            $table->string('sumber_dana');
-            $table->integer('jumlah');
-            $table->text('keterangan');
+            $table->string('nama_produk');
+            $table->integer('qty')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateKasBesarsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kas_besars');
+        Schema::dropIfExists('products');
     }
 }

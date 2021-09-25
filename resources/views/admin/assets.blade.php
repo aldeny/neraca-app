@@ -150,312 +150,312 @@
     @include('extend.modal_aset_edit');
 
 
-@push('js')
-<!-- JS DataTables -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
-{{-- <script src="{{ asset('jQuery-Mask-Plugin-1.14.16/dist/jquery.mask.min.js') }}"></script> --}}
+    @push('js')
+    <!-- JS DataTables -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+    {{-- <script src="{{ asset('jQuery-Mask-Plugin-1.14.16/dist/jquery.mask.min.js') }}"></script> --}}
 
-<!-- DataTables  & Plugins -->
-<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('plugins/jszip/jszip.min.js') }}"></script>
-<script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}"></script>
-<script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}"></script>
-<script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
-<!-- Toastr -->
-<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#jumlah_barang, #harga").keyup(function() {
-            var harga = $("#harga").val();
-            var jumlah = $("#jumlah_barang").val();
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#jumlah_barang, #harga").keyup(function() {
+                var harga = $("#harga").val();
+                var jumlah = $("#jumlah_barang").val();
 
-            var total = parseInt(harga) * parseInt(jumlah);
-            if (!isNaN(total)) {
-                $("#total").val(total);
-            }
-        });
-    });
-
-    $(document).ready(function() {
-        $("#jumlah_barang_edit, #harga_edit").keyup(function() {
-            var harga = $("#harga_edit").val();
-            var jumlah = $("#jumlah_barang_edit").val();
-
-            var total = parseInt(harga) * parseInt(jumlah);
-            if (!isNaN(total)) {
-                $("#total_edit").val(total);
-            }
-        });
-    });
-</script>
-
-<script>
-    $(function () {
-        $('#form-add').on('submit', function (e) {
-            e.preventDefault();
-
-            var form = this;
-            $.ajax({
-                url: $(form).attr('action'),
-                method: $(form).attr('method'),
-                data: new FormData(form),
-                processData:false,
-                dataType: 'json',
-                contentType:false,
-                beforeSend: function () {
-                    $(form).find('span.error-text').text('');
-                },
-                success:function(data) {
-                    if (data.code == 0) {
-                        $.each(data.error, function (prefix, val) {
-                            $(form).find('span.'+prefix+'_error').text(val[0]);
-                        });
-                    }else{
-                        $(form)[0].reset();
-                        $('#tbl_asset').DataTable().ajax.reload();
-                        //toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
-                        var Toast = Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                        Toast.fire({
-                            icon: 'success',
-                            title: data.pesan,
-                        })
-                    }
+                var total = parseInt(harga) * parseInt(jumlah);
+                if (!isNaN(total)) {
+                    $("#total").val(total);
                 }
             });
         });
-
-        //reset input file
-        $('input[type="file"][name="gambar"]').val('');
-        //image preview
-        $('input[type="file"][name="gambar"]').on('change', function () {
-            var img_path = $(this)[0].value;
-            var img_holder = $('.img-holder');
-            var extension = img_path.substring(img_path.lastIndexOf('.')+1).toLowerCase();
-
-            if (extension == 'jpeg' || extension == 'jpg' || extension == 'png') {
-                if (typeof(FileReader) != 'undefined') {
-                    img_holder.empty();
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('<img/>', {'src': e.target.result, 'class':'img-fluid center','style':'max-width:100%;margin-bottom:10px;'}).appendTo(img_holder);
-                    }
-                    img_holder.show();
-                    reader.readAsDataURL($(this)[0].files[0]);
-                } else {
-                    $(img_holder).html('Maaf browser anda tidak support FileReader');
-                }
-            }else{
-                $(img_holder).html('Maaf file yang anda masukkan tidak mendukung');
-            }
-        })
 
         $(document).ready(function() {
-            $('#tbl_asset').DataTable({
-                lengthChange: true,
-                autoWidth: false,
-                serverside: true,
-                responsive: true,
-                language: {
-                    url: '{{ asset('json/bhsTable.json') }}'
-                },
-                ajax: {
-                    url: '{{ route('GetDataAssets') }}'
-                },
-                columns: [{
-                        "data": null,
-                        "sortable": false,
-                        render: function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1
-                        },
-                    },
-                    {
-                        data: 'gambar',
-                        name: 'gambar'
-                    },
-                    {
-                        data: 'nama_barang',
-                        name: 'nama_barang'
-                    },
-                    {
-                        data: 'jumlah_barang',
-                        name: 'jumlah_barang'
-                    },
-                    {
-                        data: 'harga',
-                        name: 'harga'
-                    },
-                    {
-                        data: 'total',
-                        name: 'total'
-                    },
-                    {
-                        data: 'kondisi',
-                        name: 'kondisi'
-                    },
-                    {
-                        data: 'aksi',
-                        name: 'aksi'
-                    },
-                ]
-            });
-        });
+            $("#jumlah_barang_edit, #harga_edit").keyup(function() {
+                var harga = $("#harga_edit").val();
+                var jumlah = $("#jumlah_barang_edit").val();
 
-        //edit aset
-        $(document).on('click', '#btn-edit', function () {
-            var id_aset = $(this).data('id');
-            var url = '{{ route('edit.aset') }}';
-
-            $.get(url,{id_aset:id_aset}, function (data) {
-                //alert(data.result.nama_barang);
-                var modal_edit = $('#modal-edit');
-                $(modal_edit).modal('show');
-                $(modal_edit).find('form').find('input[name="id"]').val(data.result.id);
-                $(modal_edit).find('form').find('input[name="nama_barang"]').val(data.result.nama_barang);
-                $(modal_edit).find('form').find('input[name="jumlah_barang_edit"]').val(data.result.jumlah);
-                $(modal_edit).find('form').find('input[name="harga_edit"]').val(data.result.harga);
-                $(modal_edit).find('form').find('input[name="total_edit"]').val(data.result.total);
-                $(modal_edit).find('form').find('[name="keterangan"]').val(data.result.keterangan);
-                $(modal_edit).find('form').find('[name="kondisi"] option[value="'+data.result.kondisi+'"]').prop('selected', true)
-                $(modal_edit).find('form').find('.img-holder-update').html('<img src="/storage/img-assets/'+data.result.gambar+'" class="img-fluid" style="max-width:100px;margin-bottom:10px;">');
-                $(modal_edit).find('form').find('input[type="file"]').attr('data-value', '<img src="/storage/img-assets/'+data.result.gambar+'" class="img-fluid" style="max-width:100px;margin-bottom:10px;">');
-                $(modal_edit).find('form').find('input[type="file"]').val('');
-                $(modal_edit).find('form').find('span.error-text').val('');
-            },'json');
-        });
-
-        $('input[type="file"][name="gambar_update"]').on('change', function () {
-            var img_path = $(this)[0].value;
-            var img_holder = $('.img-holder-update');
-            var currentImgPath = $(this).data('value');
-            var extension = img_path.substring(img_path.lastIndexOf('.')+1).toLowerCase();
-
-            if (extension == 'jpeg' || extension == 'jpg' || extension == 'png') {
-                if (typeof(FileReader) != 'undefined') {
-                    img_holder.empty();
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('<img/>', {'src': e.target.result, 'class':'img-fluid center','style':'max-width:100px;margin-bottom:10px;'}).appendTo(img_holder);
-                    }
-                    img_holder.show();
-                    reader.readAsDataURL($(this)[0].files[0]);
-                } else {
-                    $(img_holder).html('Maaf browser anda tidak support FileReader');
-                }
-            }else{
-                $(img_holder).html(currentImgPath);
-            }
-        });
-
-        // Update aset
-        $('#form-edit').on('submit', function (e) {
-            e.preventDefault();
-
-            var form = this;
-            $.ajax({
-                url: $(form).attr('action'),
-                method: $(form).attr('method'),
-                data: new FormData(form),
-                processData: false,
-                contentType: false,
-                dataType: 'json',
-                beforeSend: function () {
-                    $(form).find('span.error-text').text('');
-                },
-                success:function (data){
-                    if (data.code == 0) {
-                        $.each(data.error, function (prefix, val) {
-                            $(form).find('span.'+prefix+'_error').text(val[0]);
-                        });
-                    }else{
-                        $('#tbl_asset').DataTable().ajax.reload();
-                        //toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
-                        var modal_edit = $('#modal-edit');
-                        $(modal_edit).modal('hide');
-                        var Toast = Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                        Toast.fire({
-                            icon: 'success',
-                            title: data.pesan,
-                        })
-                    }
+                var total = parseInt(harga) * parseInt(jumlah);
+                if (!isNaN(total)) {
+                    $("#total_edit").val(total);
                 }
             });
         });
+    </script>
 
-        //delete aset
-        $(document).on('click', '#btn-delete', function () {
-            var aset_id = $(this).data('id');
-            var url = '{{ route("delete.aset") }}';
-            var table = $('#tbl_asset').DataTable();
+    <script>
+        $(function () {
+            $('#form-add').on('submit', function (e) {
+                e.preventDefault();
 
-            var token = $("meta[name='csrf-token']").attr("content");
-                //alert(token);
-
-            Swal.fire({
-                title: 'Kamu yakin?',
-                text: "Data akan dihapus secara permanen loh...",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        method: 'post',
-                        url: url,
-                        data: {
-                            "aset_id": aset_id,
-                            "_token": token,
-                        },
-                        dataType: 'json',
-                        success: function(data) {
-                            if (data.code == 1) {
-                                Swal.fire(
-                                    'Terhapus!',
-                                    'Data berhasil dihapus.',
-                                    'success'
-                                )
-                                table.ajax.reload();
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    text: 'Terjadi kesalahan',
-                                })
-                            }
+                var form = this;
+                $.ajax({
+                    url: $(form).attr('action'),
+                    method: $(form).attr('method'),
+                    data: new FormData(form),
+                    processData:false,
+                    dataType: 'json',
+                    contentType:false,
+                    beforeSend: function () {
+                        $(form).find('span.error-text').text('');
+                    },
+                    success:function(data) {
+                        if (data.code == 0) {
+                            $.each(data.error, function (prefix, val) {
+                                $(form).find('span.'+prefix+'_error').text(val[0]);
+                            });
+                        }else{
+                            $(form)[0].reset();
+                            $('#tbl_asset').DataTable().ajax.reload();
+                            //toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            Toast.fire({
+                                icon: 'success',
+                                title: data.pesan,
+                            })
                         }
-                    });
+                    }
+                });
+            });
+
+            //reset input file
+            $('input[type="file"][name="gambar"]').val('');
+            //image preview
+            $('input[type="file"][name="gambar"]').on('change', function () {
+                var img_path = $(this)[0].value;
+                var img_holder = $('.img-holder');
+                var extension = img_path.substring(img_path.lastIndexOf('.')+1).toLowerCase();
+
+                if (extension == 'jpeg' || extension == 'jpg' || extension == 'png') {
+                    if (typeof(FileReader) != 'undefined') {
+                        img_holder.empty();
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('<img/>', {'src': e.target.result, 'class':'img-fluid center','style':'max-width:100%;margin-bottom:10px;'}).appendTo(img_holder);
+                        }
+                        img_holder.show();
+                        reader.readAsDataURL($(this)[0].files[0]);
+                    } else {
+                        $(img_holder).html('Maaf browser anda tidak support FileReader');
+                    }
+                }else{
+                    $(img_holder).html('Maaf file yang anda masukkan tidak mendukung');
                 }
             })
+
+            $(document).ready(function() {
+                $('#tbl_asset').DataTable({
+                    lengthChange: true,
+                    autoWidth: false,
+                    serverside: true,
+                    responsive: true,
+                    language: {
+                        url: '{{ asset('json/bhsTable.json') }}'
+                    },
+                    ajax: {
+                        url: '{{ route('GetDataAssets') }}'
+                    },
+                    columns: [{
+                            "data": null,
+                            "sortable": false,
+                            render: function(data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1
+                            },
+                        },
+                        {
+                            data: 'gambar',
+                            name: 'gambar'
+                        },
+                        {
+                            data: 'nama_barang',
+                            name: 'nama_barang'
+                        },
+                        {
+                            data: 'jumlah_barang',
+                            name: 'jumlah_barang'
+                        },
+                        {
+                            data: 'harga',
+                            name: 'harga'
+                        },
+                        {
+                            data: 'total',
+                            name: 'total'
+                        },
+                        {
+                            data: 'kondisi',
+                            name: 'kondisi'
+                        },
+                        {
+                            data: 'aksi',
+                            name: 'aksi'
+                        },
+                    ]
+                });
+            });
+
+            //edit aset
+            $(document).on('click', '#btn-edit', function () {
+                var id_aset = $(this).data('id');
+                var url = '{{ route('edit.aset') }}';
+
+                $.get(url,{id_aset:id_aset}, function (data) {
+                    //alert(data.result.nama_barang);
+                    var modal_edit = $('#modal-edit');
+                    $(modal_edit).modal('show');
+                    $(modal_edit).find('form').find('input[name="id"]').val(data.result.id);
+                    $(modal_edit).find('form').find('input[name="nama_barang"]').val(data.result.nama_barang);
+                    $(modal_edit).find('form').find('input[name="jumlah_barang_edit"]').val(data.result.jumlah);
+                    $(modal_edit).find('form').find('input[name="harga_edit"]').val(data.result.harga);
+                    $(modal_edit).find('form').find('input[name="total_edit"]').val(data.result.total);
+                    $(modal_edit).find('form').find('[name="keterangan"]').val(data.result.keterangan);
+                    $(modal_edit).find('form').find('[name="kondisi"] option[value="'+data.result.kondisi+'"]').prop('selected', true)
+                    $(modal_edit).find('form').find('.img-holder-update').html('<img src="/storage/img-assets/'+data.result.gambar+'" class="img-fluid" style="max-width:100px;margin-bottom:10px;">');
+                    $(modal_edit).find('form').find('input[type="file"]').attr('data-value', '<img src="/storage/img-assets/'+data.result.gambar+'" class="img-fluid" style="max-width:100px;margin-bottom:10px;">');
+                    $(modal_edit).find('form').find('input[type="file"]').val('');
+                    $(modal_edit).find('form').find('span.error-text').val('');
+                },'json');
+            });
+
+            $('input[type="file"][name="gambar_update"]').on('change', function () {
+                var img_path = $(this)[0].value;
+                var img_holder = $('.img-holder-update');
+                var currentImgPath = $(this).data('value');
+                var extension = img_path.substring(img_path.lastIndexOf('.')+1).toLowerCase();
+
+                if (extension == 'jpeg' || extension == 'jpg' || extension == 'png') {
+                    if (typeof(FileReader) != 'undefined') {
+                        img_holder.empty();
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('<img/>', {'src': e.target.result, 'class':'img-fluid center','style':'max-width:100px;margin-bottom:10px;'}).appendTo(img_holder);
+                        }
+                        img_holder.show();
+                        reader.readAsDataURL($(this)[0].files[0]);
+                    } else {
+                        $(img_holder).html('Maaf browser anda tidak support FileReader');
+                    }
+                }else{
+                    $(img_holder).html(currentImgPath);
+                }
+            });
+
+            // Update aset
+            $('#form-edit').on('submit', function (e) {
+                e.preventDefault();
+
+                var form = this;
+                $.ajax({
+                    url: $(form).attr('action'),
+                    method: $(form).attr('method'),
+                    data: new FormData(form),
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $(form).find('span.error-text').text('');
+                    },
+                    success:function (data){
+                        if (data.code == 0) {
+                            $.each(data.error, function (prefix, val) {
+                                $(form).find('span.'+prefix+'_error').text(val[0]);
+                            });
+                        }else{
+                            $('#tbl_asset').DataTable().ajax.reload();
+                            //toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+                            var modal_edit = $('#modal-edit');
+                            $(modal_edit).modal('hide');
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000
+                            });
+                            Toast.fire({
+                                icon: 'success',
+                                title: data.pesan,
+                            })
+                        }
+                    }
+                });
+            });
+
+            //delete aset
+            $(document).on('click', '#btn-delete', function () {
+                var aset_id = $(this).data('id');
+                var url = '{{ route("delete.aset") }}';
+                var table = $('#tbl_asset').DataTable();
+
+                var token = $("meta[name='csrf-token']").attr("content");
+                    //alert(token);
+
+                Swal.fire({
+                    title: 'Kamu yakin?',
+                    text: "Data akan dihapus secara permanen loh...",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            method: 'post',
+                            url: url,
+                            data: {
+                                "aset_id": aset_id,
+                                "_token": token,
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data.code == 1) {
+                                    Swal.fire(
+                                        'Terhapus!',
+                                        'Data berhasil dihapus.',
+                                        'success'
+                                    )
+                                    table.ajax.reload();
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: 'Terjadi kesalahan',
+                                    })
+                                }
+                            }
+                        });
+                    }
+                })
+            })
         })
-    })
-</script>
+    </script>
 
-<script>
-    $(document).ready( function () {
-    bsCustomFileInput.init();
-    });
-</script>
+    <script>
+        $(document).ready( function () {
+        bsCustomFileInput.init();
+        });
+    </script>
 
-@endpush
+    @endpush
 
 @endsection

@@ -156,13 +156,22 @@
                         </div>
                         <div class="form-group">
                             <label for="bank" class="font-weight-bold">Bank</label>
+                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" id="bank_id" name="bank_id">
+                              <option value="">Pilih Bank</option>
+                                 @foreach ($bank as $dt)
+                                    <option value="{{ $dt->id }}">{{ $dt->nama_bank }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        {{-- <div class="form-group">
+                            <label for="bank" class="font-weight-bold">Bank</label>
                             <select id="bank_id" name="bank_id" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Bank" data-original-title="" title="">
                                 <option value="">Pilih Bank</option>
                                 @foreach ($bank as $dt)
                                     <option value="{{ $dt->id }}">{{ $dt->nama_bank }}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="projectinput1" class="font-weight-bold">Jumlah</label>
                             <div class="input-group">
@@ -196,6 +205,9 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 {{-- <script src="{{ asset('jQuery-Mask-Plugin-1.14.16/dist/jquery.mask.min.js') }}"></script> --}}
 
+<!-- Select2 -->
+<script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script>
+
 <!-- DataTables  & Plugins -->
         <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -213,6 +225,16 @@
 
 
 <script>
+    $(document).ready(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+        theme: 'bootstrap4'
+        })
+    });
+
     $(document).ready(function(){
         // $('.jum').mask('000.000.000', {reverse:true});
         document.querySelectorAll('input[type-currency="IDR"]').forEach((element) => {
