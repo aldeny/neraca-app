@@ -67,7 +67,7 @@
         <!-- /.col -->
     </div>
     <div class="row">
-        <div class="col-md-6 col-sm-6 col-12">
+        <div class="col-md-4 col-sm-4 col-12">
         <div class="info-box">
             <span class="info-box-icon bg-danger"><i class="fas fa-chart-line"></i></span>
             <div class="info-box-content">
@@ -79,18 +79,27 @@
         <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-md-6 col-sm-6 col-12">
+        <div class="col-md-4 col-sm-4 col-12">
         <div class="info-box">
             <span class="info-box-icon bg-success"><i class="fas fa-money-check-alt"></i></span>
             <div class="info-box-content">
-            <span class="info-box-text">Saldo Kas Bank</span>
-            <span class="info-box-number">{{ $count_bank }}</span>
+            <span class="info-box-text">Penjualan</span>
+            <span class="info-box-number">{{ $saldo_sell_ }}</span>
             </div>
             <!-- /.info-box-content -->
         </div>
-        <!-- /.info-box -->
-        </div>
         <!-- /.col -->
+        </div>
+        <div class="col-md-4 col-sm-4 col-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-success"><i class="fas fa-money-check-alt"></i></span>
+                <div class="info-box-content">
+                <span class="info-box-text">Pendapatan</span>
+                <span class="info-box-number">{{ $cuan}}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+        <!-- /.info-box -->
         </div>
         <!-- /.col -->
     </div>

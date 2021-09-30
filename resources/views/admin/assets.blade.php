@@ -225,7 +225,7 @@
                             //toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
                             var Toast = Swal.mixin({
                                 toast: true,
-                                position: 'top-end',
+                                position: 'top',
                                 showConfirmButton: false,
                                 timer: 3000
                             });
@@ -387,7 +387,7 @@
                             $(modal_edit).modal('hide');
                             var Toast = Swal.mixin({
                                 toast: true,
-                                position: 'top-end',
+                                position: 'top',
                                 showConfirmButton: false,
                                 timer: 3000
                             });
@@ -429,11 +429,16 @@
                             dataType: 'json',
                             success: function(data) {
                                 if (data.code == 1) {
-                                    Swal.fire(
-                                        'Terhapus!',
-                                        'Data berhasil dihapus.',
-                                        'success'
-                                    )
+                                    var Toast = Swal.mixin({
+                                        toast: true,
+                                        position: 'top',
+                                        showConfirmButton: false,
+                                        timer: 3000
+                                    });
+                                    Toast.fire({
+                                        icon: 'success',
+                                        title: data.pesan,
+                                    })
                                     table.ajax.reload();
                                 } else {
                                     Swal.fire({

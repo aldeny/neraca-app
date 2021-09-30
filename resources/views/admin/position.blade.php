@@ -64,7 +64,7 @@
                 @csrf
                 <div class="form-body">
                   <div class="form-group">
-                    <label for="nama_jabatan" class="font-weight-bold">Nama Jabatank</label>
+                    <label for="nama_jabatan" class="font-weight-bold">Nama Jabatan</label>
                     <input type="hidden" name="id" id="id" class="form-control" value="">
                     <input type="hidden" name="action" id="action" class="form-control">
                     <input type="text" id="jabatan" class="form-control" name="jabatan" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Nama Jabatan" data-original-title="" title="" placeholder="Nama Jabatan">

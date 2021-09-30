@@ -203,9 +203,9 @@ class AssetsController extends Controller
         $query = $delete->delete();
 
         if ($query) {
-            return response()->json(['code'=>1]);
+            return response()->json(['code'=>1, 'pesan'=>'Data berhasil dihapus']);
         } else {
-            return response()->json(['code'=>0]);
+            return response()->json(['code'=>0, 'pesan'=>'Data gagal dihapus']);
         }
 
     }

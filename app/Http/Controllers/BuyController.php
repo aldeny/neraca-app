@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buy;
 use App\Models\Product;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -11,7 +12,9 @@ class BuyController extends Controller
 {
     public function BuyIndex()
     {
-        return view('admin.buy');
+        $product = Product::all();
+
+        return view('admin.buy', compact('product'));
     }
 
     public function BuyAdd(Request $request){
@@ -26,13 +29,17 @@ class BuyController extends Controller
         ]);
 
         $save = new Buy;
-        $save -> nama_item = $request -> nama_item;
+        $save -> product_id = $request -> nama_item;
         $save -> jumlah_item = $request -> jumlah_item;
         $save -> saldo = $request -> saldo;
         $save -> harga_beli = $request -> harga_beli;
         $save -> total = $request -> total;
         $save -> keterangan = $request -> keterangan;
         $data = $save -> save();
+
+        $product = Product::findOrFail($request->nama_item);
+        $product->qty += $request->jumlah_item;
+        $product -> save();
 
         if ($data){
             return response()->json(['success' => 'Data berhasil ditambahkan']);
@@ -48,7 +55,7 @@ class BuyController extends Controller
         if (request()->ajax()) {
             return datatables()->of($data)
             ->addColumn('nama_item', function($data){
-                $dt = $data->nama_item;
+                $dt = $data->product->nama_produk;
                 return $dt;
             })
             ->addColumn('jumlah_item', function($data){
@@ -83,8 +90,18 @@ class BuyController extends Controller
                 }
             })
             ->addColumn('aksi', function($data){
-                $btn = "<button class='btn btn-danger btn-sm btn-delete' data-id='".$data->id."'><i class='fas fa-trash-alt'></i></button>";
-                return $btn;
+                $btn_act = "<button class='btn btn-danger btn-sm btn-delete' data-jum='".$data->jumlah_item."' data-poduct='".$data->product_id."' data-id='".$data->id."'><i class='fas fa-trash-alt'></i></button>";
+
+                $btn_dis= "<button class='btn btn-danger btn-sm disabled'><i class='fas fa-trash-alt'></i></button>";
+
+                $dt_awal = new DateTime(now());
+                $dt_akhir = new DateTime($data->created_at);
+                $selisih = $dt_awal->diff($dt_akhir);
+
+                if ($selisih->days >= 1) {
+                    return $btn_dis;
+                }
+                return $btn_act;
             })
             ->rawColumns(['tanggal_keluar','dana','sumber_dana','bank_id','jumlah','keterangan','saldo','aksi'])
             ->make(true);
@@ -96,10 +113,21 @@ class BuyController extends Controller
             ]);
     }
 
-    public function deleteIdBuy($id)
+    public function deleteIdBuy(Request $request)
     {
-        $delete = buy::findOrfail($id);
+        $product = Product::findOrFail($request->poduct);
+        $product->qty -= $request->jum;
+        $product -> save();
+
+        $delete = Buy::findOrfail($request->id);
         $delete->delete();
-        return back();
+
+        if ($delete) {
+            return response()->json(['success'=>'Data berhasil dihapus']);
+        } else {
+            return response()->json(['error'=>'Data gagal dihapus']);
+
+        }
+
     }
 }

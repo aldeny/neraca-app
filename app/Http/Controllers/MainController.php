@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Bank;
 use App\Models\Buy;
 use App\Models\Cash;
+use App\Models\Sell;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 
 
@@ -32,10 +34,16 @@ class MainController extends Controller
         $saldo_buy = Buy::all()->sum('total');
         $saldo_buy_ = "Rp. ".number_format($saldo_buy,0,',','.');
 
+        $saldo_sell = Sell::all()->sum('total');
+        $saldo_sell_ = "Rp. ".number_format($saldo_sell,0,',','.');
+
         $total_saldo = $result + $kas_besar + $result_kecil;
         $coun = "Rp. ".number_format($total_saldo,0,',','.');
 
-        return view('admin.index', ['count_bank' => $coun_bank, 'count' => $coun, 'count_besar' => $coun_besar, 'count_kecil' => $coun_kecil, 'saldo_buy_' => $saldo_buy_]);
+        $pendapatan = abs($saldo_sell - $saldo_buy);
+        $cuan = "Rp. ".number_format($pendapatan,0,',','.');
+
+        return view('admin.index', ['count_bank' => $coun_bank, 'count' => $coun, 'count_besar' => $coun_besar, 'count_kecil' => $coun_kecil, 'saldo_buy_' => $saldo_buy_, 'saldo_sell_' => $saldo_sell_, 'cuan' => $cuan ]);
     }
 
     public function getIndexKasBank()
@@ -87,7 +95,7 @@ class MainController extends Controller
             return datatables()->of($data)
             ->addColumn('tanggal', function($data){
                 $dt = $data->tanggal ? with(new Carbon($data->tanggal))->format('d-M-Y') : '';
-                return $dt;
+                return $dt ;
             })
             ->addColumn('dana', function($data){
                 $sd = "<small class='badge badge-success'>".$data->dana."</small>";
@@ -110,8 +118,21 @@ class MainController extends Controller
                 return $dt;
             })
             ->addColumn('aksi', function($data){
-                $btn = "<button class='btn btn-danger btn-sm btn-delete' data-id='".$data->id."'>Delete</button>";
-                return $btn;
+
+                $dt = new DateTime($data->created_at);
+                $now = new DateTime('now');
+
+                $dt_now = $now->diff($dt);
+
+                $btn_dis = "<button class='btn btn-danger btn-sm disabled'>Delete</button>";
+                $btn_act = "<button class='btn btn-danger btn-sm btn-delete' data-id='".$data->id."'>Delete</button>";
+
+                if ($dt_now->days >= 1) {
+                    return $btn_dis;
+                } else {
+                    return $btn_act;
+                }
+
             })
             ->rawColumns(['tanggal_keluar','dana','sumber_dana','bank_id','jumlah','keterangan','aksi'])
             ->make(true);

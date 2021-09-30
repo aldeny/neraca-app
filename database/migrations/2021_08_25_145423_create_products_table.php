@@ -16,7 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('nama_produk');
-            $table->integer('qty')->nullable();
+            $table->integer('qty')->nullable()->onDelete('cascade');
             $table->timestamps();
         });
     }

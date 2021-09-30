@@ -16,12 +16,10 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->string('jabatan')->unique();
             $table->string('jenis_kelamin');
-            $table->string('status_karyawan');
-            $table->string('jabatan');
-            $table->string('shift');
+            $table->string('status');
             $table->integer('gaji');
-            $table->integer('tunjangan');
             $table->timestamps();
         });
     }

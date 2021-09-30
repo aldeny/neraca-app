@@ -26,7 +26,7 @@
                             <div class="card-body card-dashboard">
                             <p class="card-text"></p>
                                 <div class="table-responsive">
-                                <table id="tbl_asset" class="table table-striped">
+                                <table id="tbl_sell" class="table table-striped">
                                     <thead>
                                     <tr>
                                         <th>No</th>
@@ -34,6 +34,8 @@
                                         <th>Jumlah</th>
                                         <th>Harga</th>
                                         <th>Total</th>
+                                        <th>Tanggal</th>
+                                        <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
                                     </thead>
@@ -44,6 +46,8 @@
                                         <th>Jumlah</th>
                                         <th>Harga</th>
                                         <th>Total</th>
+                                        <th>Tanggal</th>
+                                        <th>Keterangan</th>
                                         <th>Aksi</th>
                                     </tr>
                                     </tfoot>
@@ -72,28 +76,36 @@
                 <form class="form" id="form-add" method="POST">
                     @csrf
                     <div class="form-body">
-                        <div class="form-group">
-                            <label for="nama_barang" class="font-weight-bold">Nama Barang</label>
-                            <input type="hidden" name="id" id="id" class="form-control" value="">
-                            <input type="hidden" name="action" id="action" class="form-control">
-                            <select id="nama_barang" name="nama_barang" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Nama Barang" data-original-title="" title="">
-                                <option value="">Pilih Barang</option>
-                                @foreach ($buy as $b)
-                                <option value="{{ $b->nama_item }}">{{ $b->nama_item }}</option>
-                                @endforeach
-                            </select>
+                        <div class="form-row">
+                            <div class="col-9">
+                                <div class="form-group">
+                                    <label for="nama-barang" class="font-weight-bold">Nama Barang</label>
+                                    <input type="hidden" name="id" id="id" class="form-control" value="">
+                                    <input type="hidden" name="action" id="action" class="form-control">
+                                    <select id="nama_barang" name="nama_barang" class="form-control" onchange="autoLoad()">
+                                        <option value="">--Pilih Barang--</option>
+                                        @foreach ($product as $prdct)
+                                            <option value="{{ $prdct->id }}">{{ $prdct->nama_produk }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <label for="stok" class="font-weight-bold">Stok</label>
+                                <input type="text" id="stok" readonly class="form-control">
+                            </div>
                         </div>
                         <div class="form-row">
                             <div class="col">
                                 <div class="form-group">
                                     <label for="jumlah_barang" class="font-weight-bold">Jumlah Barang Dijual</label>
-                                    <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang" data-placement="top" data-title="Jumlah Barang">
+                                    <input type="number" class="form-control" id="jumlah_item" name="jumlah_item" data-placement="top" data-title="Jumlah Barang">
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label for="harga" class="font-weight-bold">Harga</label>
-                                    <input type="number" class="form-control" id="harga" name="harga" data-placement="top" data-title="Harga">
+                                    <input type="number" class="form-control" id="harga_jual" name="harga_jual" data-placement="top" data-title="Harga">
                                 </div>
                             </div>
                         </div>
@@ -102,6 +114,10 @@
                             <div class="input-group">
                                 <input type="number" class="form-control"  placeholder="Total" aria-label="Amount (to the nearest dollar)" id="total" name="total">
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="keterangan" class="font-weight-bold">Keterangan</label>
+                            <textarea id="keterangan" rows="5" class="form-control" name="keterangan" placeholder="Keterangan" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="keterangan" data-original-title="" title=""></textarea>
                         </div>
                     </div>
             </div>
@@ -136,9 +152,9 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $("#jumlah_barang, #harga").keyup(function() {
-            var harga  = $("#harga").val();
-            var jumlah = $("#jumlah_barang").val();
+        $("#jumlah_item, #harga_jual").keyup(function() {
+            var harga  = $("#harga_jual").val();
+            var jumlah = $("#jumlah_item").val();
 
             var total = parseInt(harga) * parseInt(jumlah);
             if (!isNaN(total)) {
@@ -146,6 +162,21 @@
             }
         });
     });
+
+    function autoLoad()
+    {
+        var nm_barang = $("#nama_barang").val();
+        $("#stok").val('');
+        $.ajax({
+            url: "/sell/autoLoad/"+nm_barang,
+            success: function (response) {
+                if (nm_barang != '' && nm_barang != null) {
+                    $("#stok").val(response.qty);
+                //console.log(response.qty);
+                }
+            }
+        });
+    }
 </script>
 
 <script>
@@ -173,7 +204,7 @@
 
 		/* Datatables Masuk */
 		$(document).ready(function () {
-				$('#tbl_asset').DataTable({
+				$('#tbl_sell').DataTable({
 						lengthChange: true,
 						autoWidth: false,
 						serverside: true,
@@ -182,7 +213,7 @@
 								url: '{{ asset('json/bhsTable.json') }}'
 						},
 						ajax: {
-								url: '{{ route('GetDataAssets') }}'
+								url: '{{ route('getDataSell') }}'
 						},
 						columns: [{
 								"data" : null, "sortable" : false,
@@ -191,9 +222,11 @@
 								},
 						},
 								{data: 'nama_barang', name: 'nama_barang'},
-								{data: 'jumlah_barang', name: 'jumlah_barang'},
-								{data: 'harga', name: 'harga'},
+								{data: 'jumlah_item', name: 'jumlah_item'},
+								{data: 'harga_jual', name: 'harga_jual'},
 								{data: 'total', name: 'total'},
+								{data: 'tanggal', name: 'tanggal'},
+								{data: 'keterangan', name: 'keterangan'},
 								{data: 'aksi', name: 'aksi'},
 						]
 				});
@@ -207,9 +240,11 @@
 
 				$('#id').val('');
 				$('#nama_barang').val('');
-				$('#jumlah_barang').val('');
-				$('#harga').val('');
+				$('#jumlah_item').val('');
+				$('#harga_beli').val('');
 				$('#total').val('');
+				$('#keterangan').val('');
+				$('#stok').val('');
 				$('#action').val('tambah');
 		});
 
@@ -220,14 +255,14 @@
 				if ($('#action').val() == "tambah") {
 						$.ajax({
 								method: "POST",
-								url: '/bank/Addassets',
+								url: "{{ route('sell.add.data') }}",
 								data: new FormData(this),
 								dataType: 'json',
 								contentType: false,
 								cache: false,
 								processData: false,
 								success: function (data) {
-										$('#tbl_asset').DataTable().ajax.reload();
+										$('#tbl_sell').DataTable().ajax.reload();
 												if(data.success){
                                                     const Toast = Swal.mixin({
                                                     toast: true,
@@ -261,47 +296,47 @@
 				}
 		});
 
-		$(document).on('click', '.btn-delete', function () {
-				var table = $('#tbl_asset').DataTable();
-				let id = $(this).data('id');
-				//let name = $(this).attr('data-name')
-				alert(id);
-				var token = $("meta[name='csrf-token']").attr("content");
-				//alert(token);
+		// $(document).on('click', '.btn-delete', function () {
+		// 		var table = $('#tbl_sell').DataTable();
+		// 		let id = $(this).data('id');
+		// 		//let name = $(this).attr('data-name')
+		// 		alert(id);
+		// 		var token = $("meta[name='csrf-token']").attr("content");
+		// 		//alert(token);
 
-				Swal.fire({
-				title: 'Kamu yakin?',
-				text: "Data akan dihapus secara permanen loh...",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Ya, hapus!'
-				}).then((result) => {
-						if (result.isConfirmed) {
-								// window.location = "/super/delete/"+id+""
+		// 		Swal.fire({
+		// 		title: 'Kamu yakin?',
+		// 		text: "Data akan dihapus secara permanen loh...",
+		// 		icon: 'warning',
+		// 		showCancelButton: true,
+		// 		confirmButtonColor: '#3085d6',
+		// 		cancelButtonColor: '#d33',
+		// 		confirmButtonText: 'Ya, hapus!'
+		// 		}).then((result) => {
+		// 				if (result.isConfirmed) {
+		// 						// window.location = "/super/delete/"+id+""
 
-								$.ajax({
-										type: "post",
-										url: "/asset/delete/"+id,
-										data: {
-												"id": id,
-												"_token": token,
-										},
-										success: function (response) {
-												Swal.fire(
-												'Terhapus!',
-												'Data berhasil dihapus.',
-												'success'
-												)
-												table.ajax.reload();
-												$('#count').load(' #count');
-												//refreshTable();
-										}
-								});
-						}
-				})
-		});
+		// 						$.ajax({
+		// 								type: "post",
+		// 								url: "/asset/delete/"+id,
+		// 								data: {
+		// 										"id": id,
+		// 										"_token": token,
+		// 								},
+		// 								success: function (response) {
+		// 										Swal.fire(
+		// 										'Terhapus!',
+		// 										'Data berhasil dihapus.',
+		// 										'success'
+		// 										)
+		// 										table.ajax.reload();
+		// 										$('#count').load(' #count');
+		// 										//refreshTable();
+		// 								}
+		// 						});
+		// 				}
+		// 		})
+		// });
 
 </script>
 

@@ -50,10 +50,14 @@ Route::get('/kas/getData/SmallCash', [MainController::class, 'getDataKasKecil'])
 Route::get('/buy/index', [BuyController::class, 'BuyIndex'])->name('buyIndex');
 Route::post('/buy/addData', [BuyController::class, 'BuyAdd']);
 Route::get('/buy/getData', [BuyController::class, 'BuygetData'])->name('getDataBuy');
-Route::post('/buy/delete/{id}', [BuyController::class, 'deleteIdBuy']);
+Route::post('/buy/delete', [BuyController::class, 'deleteIdBuy'])->name('delete.buy');
 
 /* Penjualan */
 Route::get('/sell/index', [SellController::class, 'SellIndex'])->name('index_sell');
+Route::post('/sell/addSell', [SellController::class, 'SellAddData'])->name('sell.add.data');
+Route::get('/sell/getData', [SellController::class, 'SellgetData'])->name('getDataSell');
+Route::get('/sell/autoLoad/{item}', [SellController::class, 'getAutoLoad']);
+
 
 /* Bank */
 Route::get('/bank/index', [BankController::class, 'index_bank'])->name('index_bank');
@@ -72,7 +76,7 @@ Route::post('/asset/Updateassets', [AssetsController::class, 'UpdateDataassets']
 Route::post('/asset/delete', [AssetsController::class, 'deleteIdAsset'])->name('delete.aset');
 
 /* Karyawan */
-Route::get('employee/index', [EmployeeController::class, 'EmployeeIndex'])->name('employee.index');
+Route::get('employee', [EmployeeController::class, 'EmployeeIndex'])->name('employee.index');
 
 /* Jabatan */
 Route::get('/position', [PositionController::class, 'PositionIndex'])->name('position.index');

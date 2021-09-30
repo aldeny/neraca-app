@@ -81,6 +81,11 @@
                     <span class="text-danger">@error('nama_produk') {{ $message }} @enderror</span>
                     <input type="text" id="nama_produk" class="form-control" name="nama_produk" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Nama Produk" data-original-title="" title="" placeholder="Nama Produk">
                     </div>
+                    <div class="form-group">
+                        <label for="jumlah-produk" class="font-weight-bold">Jumlah Produk</label>
+                        <span class="text-danger">@error('nama_produk') {{ $message }} @enderror</span>
+                        <input type="text" id="jumlah_produk" class="form-control" name="jumlah_produk" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Jumlah Produk" data-original-title="" title="" placeholder="Jumlah Produk">
+                    </div>
                 </div>
                 </div>
                 <div class="modal-footer">
@@ -146,20 +151,20 @@
 
         $('#id').val('');
         $('#nama_produk').val('');
-        $('#jumlah').val('');
+        document.getElementById("jumlah_produk").disabled = true;
         $('#action').val('tambah');
     });
 
     /* Function Tambah */
     $(document).on('click', '.btn-edit', function () {
         let edit_id = $(this).data('id');
-        alert(edit_id);
-        $('.btn-action').html('Update');
 
+        $('.btn-action').html('Update');
         $('#add-produk').modal('show');
         $('.modal-title').html('Update Data Produk');
         $('#id').val('');
         $('#nama_produk').val('');
+        document.getElementById("jumlah_produk").readOnly = true;
 
         $.ajax({
             url: "/product/getData/"+edit_id,
@@ -167,6 +172,7 @@
             success: function (html) {
                 $("#id").val(html.product.id);
                 $("#nama_produk").val(html.product.nama_produk);
+                $("#jumlah_produk").val(html.product.qty);
                 $("#action").val('edit');
             }
         });
@@ -323,7 +329,10 @@
                                 title: response.error
                             });
                         }
-                    }
+                    },
+                    error: function (err) {
+                        alert('eror');
+                     }
                 });
             }
         })

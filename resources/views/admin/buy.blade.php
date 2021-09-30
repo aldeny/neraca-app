@@ -42,7 +42,7 @@
                                     <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Item</th>
+                                        <th>Nama Produk</th>
                                         <th>Jumlah</th>
                                         <th>Harga</th>
                                         <th>Total</th>
@@ -55,7 +55,7 @@
                                     <tfoot>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Item</th>
+                                        <th>Nama Produk</th>
                                         <th>Jumlah</th>
                                         <th>Harga</th>
                                         <th>Total</th>
@@ -91,14 +91,19 @@
                     @csrf
                     <div class="form-body">
                         <div class="form-group">
-                            <label for="nama_item" class="font-weight-bold">Nama Item</label>
+                            <label for="nama_item" class="font-weight-bold">Nama Produk</label>
                             <input type="hidden" name="id" id="id" class="form-control" value="">
                             <input type="hidden" name="action" id="action" class="form-control">
-                            <input type="text" id="nama_item" class="form-control" name="nama_item" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Nama Item" data-original-title="" title="" placeholder="Nama Item">
+                            <select id="nama_item" name="nama_item" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Nama Item" data-original-title="" title="">
+                                <option value="">Pilih Produk</option>
+                                @foreach ($product as $prdct)
+                                    <option value="{{ $prdct->id }}">{{ $prdct->nama_produk }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="jumlah" class="font-weight-bold">Jumlah Item</label>
-                            <input type="number" class="form-control" id="jumlah_item" name="jumlah_item" data-placement="top" data-title="Jumlah Item" placeholder="Jumlah Item">
+                            <label for="jumlah" class="font-weight-bold">Jumlah Produk</label>
+                            <input type="number" class="form-control" id="jumlah_item" name="jumlah_item" data-placement="top" data-title="Jumlah Item" placeholder="Jumlah Produk">
                         </div>
                         <div class="form-group">
                             <label for="from_saldo" class="font-weight-bold">Dari Saldo</label>
@@ -296,8 +301,10 @@
     $(document).on('click', '.btn-delete', function () {
         var table = $('#tbl_buy').DataTable();
         let id = $(this).data('id');
+        let poduct = $(this).data('poduct');
+        let jum = $(this).data('jum');
         //let name = $(this).attr('data-name')
-        //alert(id);
+        // alert(poduct);
         var token = $("meta[name='csrf-token']").attr("content");
         //alert(token);
 
@@ -315,9 +322,11 @@
 
                 $.ajax({
                     type: "post",
-                    url: "/buy/delete/"+id,
+                    url: "{{ route('delete.buy') }}",
                     data: {
                         "id": id,
+                        "poduct": poduct,
+                        "jum": jum,
                         "_token": token,
                     },
                     success: function (response) {
@@ -328,6 +337,9 @@
                         )
                         table.ajax.reload();
                         //refreshTable();
+                    },
+                    error: function (err) {
+                        alert(err.error);
                     }
                 });
             }

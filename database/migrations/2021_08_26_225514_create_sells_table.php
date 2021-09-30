@@ -15,10 +15,11 @@ class CreateSellsTable extends Migration
     {
         Schema::create('sells', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_item');
+            $table->foreignId('product_id')->onDelete('cascade');
             $table->integer('jumlah_item');
             $table->integer('harga_jual');
             $table->integer('total');
+            $table->string('keterangan');
             $table->timestamps();
         });
     }

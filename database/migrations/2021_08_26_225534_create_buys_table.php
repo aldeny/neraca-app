@@ -16,7 +16,7 @@ class CreateBuysTable extends Migration
     {
         Schema::create('buys', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_item');
+            $table->foreignId('product_id')->onDelete('cascade');
             $table->integer('jumlah_item');
             $table->integer('saldo');
             $table->integer('harga_beli');

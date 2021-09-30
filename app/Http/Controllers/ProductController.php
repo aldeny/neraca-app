@@ -69,6 +69,7 @@ class ProductController extends Controller
         $id_product = $request->id;
         $update = Product::find($id_product);
         $update -> nama_produk = $request -> nama_produk;
+        $update -> qty = $request -> jumlah_produk;
         $update -> save();
 
         return response()->json(['success' => 'Data berhasil di update']);
@@ -77,6 +78,8 @@ class ProductController extends Controller
     public function deleteIdProduct($id)
     {
         $delete = Product::findOrfail($id);
+        $delete->buy()->delete();
+        //$delete->sell()->delete();
         $delete->delete();
 
         if ($delete) {
