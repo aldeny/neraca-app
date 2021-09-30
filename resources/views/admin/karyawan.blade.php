@@ -7,7 +7,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Kas Bank</h1>
+          <h1 class="m-0">Data Karyawan</h1>
         </div>
         <!-- /.col -->
       </div>
@@ -29,28 +29,26 @@
                             <div class="card-body card-dashboard">
                             <p class="card-text"></p>
                                 <div class="table-responsive">
-                                <table id="tbl_kas" class="table table-striped">
+                                <table id="tbl_employee" class="table table-striped">
                                     <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Tanggal</th>
-                                        <th>Dana</th>
-                                        <th>Sumber Dana</th>
-                                        <th>Bank</th>
-                                        <th>Jumlah</th>
-                                        <th>Keterangan</th>
+                                        <th>Nama</th>
+                                        <th>Jabatan</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Status</th>
+                                        <th>Gaji</th>
                                         <th>Aksi</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
                                     <tr>
                                         <th>No</th>
-                                        <th>Tanggal</th>
-                                        <th>Dana</th>
-                                        <th>Sumber Dana</th>
-                                        <th>Bank</th>
-                                        <th>Jumlah</th>
-                                        <th>Keterangan</th>
+                                        <th>Nama</th>
+                                        <th>Jabatan</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Status</th>
+                                        <th>Gaji</th>
                                         <th>Aksi</th>
                                     </tr>
                                     </tfoot>
@@ -87,7 +85,7 @@
                         </div>
                         <div class="form-group">
                             <label for="bank" class="font-weight-bold">Jabatan</label>
-                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" id="bank_id" name="bank_id">
+                            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true" id="jabatan" name="jabatan">
                               <option value="">Pilih Jabatan</option>
                                  @foreach ($position as $pos)
                                     <option value="{{ $pos->id }}">{{ $pos->jabatan }}</option>
@@ -95,20 +93,68 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="projectinput1" class="font-weight-bold">Jumlah</label>
-                            <div class="input-group">
-                                {{-- <div class="input-group-prepend">
-                                <span class="input-group-text">Rp.</span>
-                                </div> --}}
-                                <input type="text" class="form-control jum" type-currency="IDR" placeholder="Jumlah" aria-label="Amount (to the nearest dollar)" name="jumlah">
-                                {{-- <div class="input-group-append">
-                                <span class="input-group-text">.00</span>
-                                </div> --}}
+                            <label for="upah-gaji" class="font-weight-bold">Gaji</label>
+                            <input type="number" class="form-control" name="gaji" id="gaji">
+                        </div>
+                        <div class="form-group">
+                            <label for="jk">Jenis Kelamin</label>
+                            <div class="row text-center pt-3">
+                                <div class="col-lg-6">
+                                    <div class="form-group clearfix">
+                                        <div class="icheck-primary d-inline">
+                                          <input type="radio" id="radioPrimary1" name="r1" value="LK">
+                                          <label for="radioPrimary1">
+                                              Laki-Laki
+                                          </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group clearfix">
+                                        <div class="icheck-primary d-inline">
+                                          <input type="radio" id="radioPrimary2" name="r1" value="PR">
+                                          <label for="radioPrimary2">
+                                              Perempuan
+                                          </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="keterangan" class="font-weight-bold">Keterangan</label>
-                            <textarea id="keterangan" rows="5" class="form-control" name="keterangan" placeholder="Keterangan" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="keterangan" data-original-title="" title=""></textarea>
+                            <label for="sts">Status</label>
+                            <div class="row text-center pt-3">
+                                <div class="col-lg-4">
+                                    <div class="form-group clearfix">
+                                        <div class="icheck-primary d-inline">
+                                          <input type="radio" id="radioPrimary3" name="r2" value="LK">
+                                          <label for="radioPrimary3">
+                                              Tetap
+                                          </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group clearfix">
+                                        <div class="icheck-primary d-inline">
+                                          <input type="radio" id="radioPrimary4" name="r2" value="PR">
+                                          <label for="radioPrimary4">
+                                              Kontrak
+                                          </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group clearfix">
+                                        <div class="icheck-primary d-inline">
+                                          <input type="radio" id="radioPrimary5" name="r2" value="PR">
+                                          <label for="radioPrimary5">
+                                              Magang
+                                          </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -181,7 +227,7 @@
 
     /* Datatables Masuk */
     $(document).ready(function () {
-        $('#tbl_kas').DataTable({
+        $('#tbl_employee').DataTable({
             lengthChange: true,
             autoWidth: false,
             serverside: true,
@@ -198,12 +244,11 @@
                     return meta.row + meta.settings._iDisplayStart + 1
                 },
             },
-                {data: 'tanggal', name: 'tanggal'},
-                {data: 'dana', name: 'dana'},
-                {data: 'sumber_dana', name: 'sumber_dana'},
-                {data: 'bank_id', name: 'bank_id'},
-                {data: 'jumlah', name: 'jumlah'},
-                {data: 'keterangan', name: 'keterangan'},
+                {data: 'nama', name: 'nama'},
+                {data: 'jabatan', name: 'jabatan'},
+                {data: 'jenis_kelamin', name: 'jenis_kelamin'},
+                {data: 'status', name: 'status'},
+                {data: 'gaji', name: 'gaji'},
                 {data: 'aksi', name: 'aksi'},
             ]
         });
@@ -212,7 +257,7 @@
     /* FUnction Tambah */
     $(document).on('click', '#btn-add', function () {
         $('#modal-add').modal('show');
-        $('#modal-title').html('Tambah Data Masuk');
+        $('#modal-title').html('Tambah Karyawan');
         $('.btn-action').html('Simpan');
 
         $('#id').val('');
