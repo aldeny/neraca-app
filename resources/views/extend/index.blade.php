@@ -207,7 +207,7 @@
                     //console.log(err_log);
                     const Toast = Swal.mixin({
                                 toast: true,
-                                position: 'top-end',
+                                position: 'top',
                                 showConfirmButton: false,
                                 timer: 3000,
                                 width: '20rem',
@@ -343,10 +343,9 @@
                     success: function (response) {
                         const Toast = Swal.mixin({
                                 toast: true,
-                                position: 'top-end',
+                                position: 'top',
                                 showConfirmButton: false,
                                 timer: 3000,
-                                width: '30rem',
                                 timerProgressBar: true,
                                 didOpen: (toast) => {
                                 toast.addEventListener('mouseenter', Swal.stopTimer)

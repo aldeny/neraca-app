@@ -77,6 +77,14 @@ Route::post('/asset/delete', [AssetsController::class, 'deleteIdAsset'])->name('
 
 /* Karyawan */
 Route::get('employee', [EmployeeController::class, 'EmployeeIndex'])->name('employee.index');
+Route::post('/employee/Addemployee', [EmployeeController::class, 'insert_employee'])->name('save.employee');
+Route::get('/employee/GetEmployee', [EmployeeController::class, 'GetDataEmployee'])->name('get.data.employee');
+Route::get('/employee/GetEmployee/{id}', [EmployeeController::class, 'GetDataEmployeeId']);
+Route::post('/employee/UpdateEmployee', [EmployeeController::class, 'UpdateEmployee'])->name('update.employee');
+Route::post('/employee/PayEmployee', [EmployeeController::class, 'PayEmployee'])->name('pay.employee');
+Route::get('/employee/Payment', [EmployeeController::class, 'Payment'])->name('report.payment');
+Route::post('/employee/PaymentDel/{id}', [EmployeeController::class, 'PaymentDel']);
+Route::post('/employee/EmployeeDel/{id}', [EmployeeController::class, 'EmployeeDel']);
 
 /* Jabatan */
 Route::get('/position', [PositionController::class, 'PositionIndex'])->name('position.index');
