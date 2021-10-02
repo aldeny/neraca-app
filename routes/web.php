@@ -3,6 +3,7 @@
 use App\Http\Controllers\AssetsController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\BuyController;
+use App\Http\Controllers\CreditController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MainController;
@@ -101,3 +102,8 @@ Route::get('/product/getProduct', [ProductController::class, 'getDataProduct'])-
 Route::get('/product/getData/{id}', [ProductController::class, 'getIdProduct']);
 Route::post('/product/updateProduct', [ProductController::class, 'updateProduct'])->name('product.add.update');
 Route::post('/product/delete/{id}', [ProductController::class, 'deleteIdProduct']);
+
+/* Credit */
+Route::get('/credit', [CreditController::class, 'CreditIndex'])->name('credit.index');
+Route::post('/credit/addCredit', [CreditController::class, 'CreditAdd'])->name('credit.add');
+Route::get('/credit/getCredit', [CreditController::class, 'CreditGet'])->name('credit.get');

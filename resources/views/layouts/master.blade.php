@@ -213,6 +213,14 @@
                             </p>
                         </a>
                       </li>
+                      <li class="nav-item">
+                        <a href="{{ route('credit.index') }}" class="nav-link">
+                            <i class="fas fa-file-invoice nav-icon"></i>
+                            <p>
+                            Credit
+                            </p>
+                        </a>
+                      </li>
                     </ul>
                 </li>
                 <li class="nav-header">Data Master</li>
