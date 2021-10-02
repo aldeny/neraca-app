@@ -16,10 +16,11 @@ class CreateCreditsTable extends Migration
         Schema::create('credits', function (Blueprint $table) {
             $table->id();
             $table->string('nama_item');
+            $table->date('tanggal_beli');
             $table->integer('harga');
-            $table->string('ket_bayar');
             $table->integer('jumlah_bayar');
             $table->integer('sisa');
+            $table->string('ket_bayar');
             $table->timestamps();
         });
     }
