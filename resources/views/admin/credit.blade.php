@@ -17,7 +17,7 @@
 </div>
 
 <section class="content">
-  <div class="container-fluid">
+    <div class="container-fluid">
         {{-- DataTables --}}
         <section id="configuration">
           <div class="row">
@@ -64,13 +64,53 @@
             </div>
           </div>
         </section>
-      </div>
+
+        {{-- DataTables --}}
+        <section id="configuration">
+            <div class="row">
+              <div class="col-12">
+              <div class="card">
+                  <div class="card-content collapse show">
+                      <div class="card-header">
+                          <h3>Histori Pembayaran</h3>
+                      </div>
+                  <div class="card-body">
+                      <div class="table-responsive">
+                          <table id="tbl-credit-histori" class="table table-striped table-bordered">
+                              <thead>
+                                  <tr>
+                                      <th>No</th>
+                                      <th>Nama Barang</th>
+                                      <th>Tanggal Bayar</th>
+                                      <th>Bayar</th>
+                                      <th>Keterangan</th>
+                                      <th>Aksi</th>
+                                  </tr>
+                              </thead>
+                              <tfoot>
+                                  <tr>
+                                      <th>No</th>
+                                      <th>Nama Barang</th>
+                                      <th>Tanggal Bayar</th>
+                                      <th>Bayar</th>
+                                      <th>Keterangan</th>
+                                      <th>Aksi</th>
+                                  </tr>
+                              </tfoot>
+                          </table>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+              </div>
+            </div>
+          </section>
     </div>
-  </div>
 </section>
 
+
 <div class="modal fade text-left" id="modal-add-credit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-info">
                 <h5 class="modal-title text-white" id="modal-title"></h5>
@@ -139,6 +179,8 @@
     </div>
 </div>
 
+@include('extend.sisa_credit')
+
 @push('js')
 <!-- JS DataTables -->
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
@@ -203,6 +245,33 @@
         });
     });
 
+    $(document).ready(function () {
+        $('#tbl-credit-histori').DataTable({
+            lengthChange: true,
+            autoWidth: false,
+            serverside: true,
+            responsive: true,
+            language: {
+                url: '{{ asset('json/bhsTable.json') }}'
+            },
+            ajax: {
+                url: '{{ route('history.credit.get') }}'
+            },
+            columns: [{
+                "data" : null, "sortable" : false,
+                render: function(data, type, row, meta){
+                    return meta.row + meta.settings._iDisplayStart + 1
+                },
+            },
+                {data: 'nama_barang', name: 'nama_barang'},
+                {data: 'tanggal_bayar', name: 'tanggal_bayar'},
+                {data: 'sisa_bayar', name: 'sisa_bayar'},
+                {data: 'keterangan_histori', name: 'keterangan_histori'},
+                {data: 'aksi', name: 'aksi'},
+            ]
+        });
+    });
+
     /* FUnction Tambah */
     $(document).on('click', '#btn-add-credit', function () {
         $('#modal-add-credit').modal('show');
@@ -242,6 +311,41 @@
         });
     });
 
+    /* Function Sisa */
+    $(document).on('click', '.btn-sisa', function () {
+        let sisa_id = $(this).data('id');
+        let sisa = $(this).data('sisa');
+        // alert(sisa);
+        // alert(sisa_id);
+
+        $('#modal-add-sisa').modal('show');
+        $('.modal-title').html('Bayar sisa credit');
+        $('.btn-action').html('Bayar');
+
+        $('#id_sisa').val('');
+        $('#tanggal_bayar_sisa').val('');
+        $('#jumlah_bayar_sisa').val('');
+        $('#action').val('bayar');
+
+        $.ajax({
+            url: "/credit/GetCredit/"+sisa_id,
+            dataType: "json",
+            success: function (html) {
+                $("#id_sisa").val(html.credit.id);
+                $('#tanggal_bayar_sisa').val('');
+                $('#jumlah_bayar_sisa').val('');
+                $("#action").val('bayar');
+
+                $('#sisaNamaItem').html(html.credit.nama_item);
+                $('#sisaTanggalBeli').html(html.credit.tanggal_beli);
+                $('#sisaHarga').html(html.credit.harga);
+                $('#sisaSisa').html(html.credit.sisa);
+                $('#sisaKetBayar').html(html.credit.ket_bayar);
+
+            }
+        });
+    });
+
     $('#form-add-credit').on('submit', function (e) {
         event.preventDefault();
 
@@ -258,6 +362,7 @@
                 processData: false,
                 success: function (data) {
                     $('#tbl-credit').DataTable().ajax.reload();
+                    $('#tbl-credit-histori').DataTable().ajax.reload();
                         if(data.success){
                                 const Toast = Swal.mixin({
                                 toast: true,
@@ -348,8 +453,59 @@
         }
     });
 
+    $('#form-sisa-credit').on('submit', function (e) {
+        event.preventDefault();
+
+        if ($('#action').val() == "bayar") {
+            $.ajax({
+                method: "POST",
+                url: "{{ route('pay.credit') }}",
+                data: new FormData(this),
+                dataType: 'json',
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    $('#tbl-credit').DataTable().ajax.reload();
+                    $('#tbl-credit-histori').DataTable().ajax.reload();
+                        if(data.success){
+                                const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: data.success
+                            });
+                        }
+                        if(data.error){
+                            Toast.fire({
+                                icon: 'error',
+                                title: data.error
+                            });
+                        }
+
+                        //$("#action").val("");
+                        $("#id").val("");
+                        $('#modal-add-sisa').modal('hide');
+                        },
+                        error : function (data) {
+                            alert(data.error);
+                        }
+            });
+        }
+    });
+
     $(document).on('click', '.btn-delete', function () {
-        var table = $('#tbl-product').DataTable();
+        var table = $('#tbl-credit').DataTable();
         let id = $(this).data('id');
         //let name = $(this).attr('data-name')
         //alert(id);
@@ -370,13 +526,83 @@
 
                 $.ajax({
                     type: "post",
-                    url: "/product/delete/"+id,
+                    url: "/credit/delete/"+id,
                     data: {
                         "id": id,
                         "_token": token,
                     },
                     success: function (response) {
                         table.ajax.reload();
+                        if(response.success){
+                                const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: response.success
+                            });
+                        }
+                        if(response.error){
+                            Toast.fire({
+                                icon: 'error',
+                                title: response.error
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        alert('eror');
+                     }
+                });
+            }
+        })
+    });
+
+    $(document).on('click', '.btn-delete-histori', function () {
+        var table = $('#tbl-credit-histori').DataTable();
+        var table_credit = $('#tbl-credit').DataTable();
+        let id = $(this).data('id');
+        let sisa = $(this).data('sisa');
+        let credit = $(this).data('credit');
+        //let name = $(this).attr('data-name')
+        // alert(id);
+        // alert(sisa);
+        // alert(credit);
+        var token = $("meta[name='csrf-token']").attr("content");
+        //alert(token);
+
+        Swal.fire({
+        title: 'Kamu yakin?',
+        text: "Data akan dihapus secara permanen loh...",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // window.location = "/super/delete/"+id+""
+
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('delete.histori') }}",
+                    data: {
+                        "id": id,
+                        "_token": token,
+                        "sisa": sisa,
+                        "credit": credit,
+                    },
+                    success: function (response) {
+                        table.ajax.reload();
+                        table_credit.ajax.reload();
                         if(response.success){
                                 const Toast = Swal.mixin({
                                 toast: true,

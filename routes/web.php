@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SellController;
+use App\Models\Credit;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Routing\Route as RoutingRoute;
 
@@ -107,3 +108,10 @@ Route::post('/product/delete/{id}', [ProductController::class, 'deleteIdProduct'
 Route::get('/credit', [CreditController::class, 'CreditIndex'])->name('credit.index');
 Route::post('/credit/addCredit', [CreditController::class, 'CreditAdd'])->name('credit.add');
 Route::get('/credit/getCredit', [CreditController::class, 'CreditGet'])->name('credit.get');
+Route::post('/credit/delete/{id}', [CreditController::class, 'deleteIdCredit']);
+Route::get('/credit/GetCredit/{id}', [CreditController::class, 'GetDataCreditId']);
+Route::post('/credit/PayCredit', [CreditController::class, 'PayCredit'])->name('pay.credit');
+
+/* History Credit */
+Route::get('/history/getHistoryCredit', [CreditController::class, 'HistoryCreditGet'])->name('history.credit.get');
+Route::post('/history/delete/', [CreditController::class, 'deleteIdHistoryCredit'])->name('delete.histori');

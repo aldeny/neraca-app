@@ -359,7 +359,7 @@
 
         $('#modal-add').modal('show');
         $('.modal-title').html('Edit Data karyawan');
-        $('.btn-action').html('edit');
+        $('.btn-action').html('Update');
 
         $('#id').val('');
         $('#nama_lengkap').val('');
