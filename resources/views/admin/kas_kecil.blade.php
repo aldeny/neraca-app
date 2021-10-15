@@ -35,6 +35,7 @@
           <div class="card">
             <div class="card-header">
               <button id="btn-add" class="btn btn-info"><i class="fas fa-plus-circle"></i> Tambah Data</button>
+              <button id="btn-print" class="btn btn-secondary" data-toggle="modal" data-target="#modal-print-kas-kecil"><i class="fas fa-print"></i> Print</button>
             </div>
             <div class="card-content collapse show">
               <div class="card-body card-dashboard">
@@ -144,6 +145,8 @@
   </div>
 </div>
 {{-- End Modal Masuk--}}
+
+@include('extend.modal_print_kas_kecil')
 
 @push('js')
 <!-- JS DataTables -->

@@ -115,3 +115,9 @@ Route::post('/credit/PayCredit', [CreditController::class, 'PayCredit'])->name('
 /* History Credit */
 Route::get('/history/getHistoryCredit', [CreditController::class, 'HistoryCreditGet'])->name('history.credit.get');
 Route::post('/history/delete/', [CreditController::class, 'deleteIdHistoryCredit'])->name('delete.histori');
+
+
+/* Print */
+Route::get('/print/kasBank/{from_date}/{to_date}', [MainController::class, 'PrintKB'])->name('print.kb');
+Route::get('/print/kasBesar/{from_date}/{to_date}', [MainController::class, 'PrintKBs'])->name('print.kbs');
+Route::get('/print/kasKecil/{from_date}/{to_date}', [MainController::class, 'PrintKC'])->name('print.kc');

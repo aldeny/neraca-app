@@ -154,13 +154,13 @@
                     <ul class="nav nav-treeview">
                       <li class="nav-item">
                         <a href="{{ route('kas_bank') }}" class="nav-link {{ Route::is('kas_bank') ? 'active' : '' }}">
-                          <i class="fas fa-user-graduate nav-icon"></i>
+                            <i class="fas fa-cash-register nav-icon"></i>
                           <p>Kas Bank</p>
                         </a>
                       </li>
                       <li class="nav-item a">
                         <a href="{{ route('kas_besar') }}" class="nav-link {{ Route::is('kas_besar') ? 'active' : '' }}">
-                            <i class="fas fa-file-invoice nav-icon"></i>
+                            <i class="fas fa-cash-register nav-icon"></i>
                             <p>
                             Kas Besar
                             </p>
@@ -168,7 +168,7 @@
                       </li>
                       <li class="nav-item">
                         <a href="{{ route('kas_kecil') }}" class="nav-link {{ Route::is('kas_kecil') ? 'active' : '' }}">
-                            <i class="fas fa-file-invoice nav-icon"></i>
+                            <i class="fas fa-cash-register nav-icon"></i>
                             <p>
                             Kas Kecil
                             </p>
@@ -176,9 +176,10 @@
                       </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ Route::is('buyIndex') ? 'menu-is-opening menu-open' : '' }} || {{ Route::is('index_assets') ? 'menu-is-opening menu-open' : '' }}">
-                    <a href="#" class="nav-link {{ Route::is('buyIndex') ? 'active' : '' }} || {{ Route::is('index_assets') ? 'active' : '' }}">
-                      <i class="nav-icon fas fa-money-bill-alt"></i>
+                <li class="nav-item {{ Route::is('buyIndex') ? 'menu-is-opening menu-open' : '' }} || {{ Route::is('index_assets') ? 'menu-is-opening menu-open' : '' }} || {{ Route::is('employee.index') ? 'menu-is-opening menu-open' : '' }} || {{ Route::is('index_sell') ? 'menu-is-opening menu-open' : '' }} || {{ Route::is('index_assets') ? 'menu-is-opening menu-open' : '' }} || {{ Route::is('credit.index') ? 'menu-is-opening menu-open' : '' }}">
+
+                    <a href="#" class="nav-link {{ Route::is('buyIndex') ? 'active' : '' }} || {{ Route::is('employee.index') ? 'active' : '' }}|| {{ Route::is('index_sell') ? 'active' : '' }} || {{ Route::is('index_assets') ? 'active' : '' }} || {{ Route::is('credit.index') ? 'active' : '' }}">
+                        <i class="fas fa-retweet nav-icon"></i>
                       <p>
                         Arus Kas
                         <i class="right fas fa-angle-left"></i>
@@ -187,36 +188,36 @@
                     <ul class="nav nav-treeview">
                       <li class="nav-item">
                         <a href="{{ route('buyIndex') }}" class="nav-link {{ Route::is('buyIndex') ? 'active' : '' }}">
-                          <i class="fas fa-user-graduate nav-icon"></i>
+                            <i class="fas fa-store nav-icon"></i>
                           <p>Pembelian</p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="{{ route('index_sell') }}" class="nav-link">
-                          <i class="fas fa-user-graduate nav-icon"></i>
+                        <a href="{{ route('index_sell') }}" class="nav-link {{ Route::is('index_sell') ? 'active' : '' }}">
+                          <i class="fas fa-shopping-cart nav-icon"></i>
                           <p>Penjualan</p>
                         </a>
                       </li>
                       <li class="nav-item">
                         <a href="{{ route('index_assets') }}" class="nav-link {{ Route::is('index_assets') ? 'active' : '' }}">
-                            <i class="fas fa-file-invoice nav-icon"></i>
+                            <i class="fas fa-archive nav-icon"></i>
                             <p>
                             Aset
                             </p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="{{ route('employee.index') }}" class="nav-link">
-                            <i class="fas fa-file-invoice nav-icon"></i>
+                        <a href="{{ route('employee.index') }}" class="nav-link {{ Route::is('employee.index') ? 'active' : '' }}">
+                            <i class="fas fa-users nav-icon"></i>
                             <p>
                             Karyawan
                             </p>
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a href="{{ route('credit.index') }}" class="nav-link">
-                            <i class="fas fa-file-invoice nav-icon"></i>
-                            <p>
+                          <a href="{{ route('credit.index') }}" class="nav-link {{ Route::is('credit.index') ? 'active' : '' }}">
+                          <i class="fas fa-credit-card nav-icon"></i>
+                          <p>
                             Credit
                             </p>
                         </a>
@@ -226,7 +227,7 @@
                 <li class="nav-header">Data Master</li>
                 <li class="nav-item">
                     <a href="{{ route('product.index') }}" class="nav-link {{ Route::is('product.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-university"></i>
+                        <i class="fas fa-box-open nav-icon"></i>
                         <p>
                         Produk
                         </p>
@@ -242,9 +243,20 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('position.index') }}" class="nav-link {{ Route::is('position.index') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-university"></i>
+                        <i class="far fa-handshake nav-icon"></i>
                         <p>
                         Jabatan
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-header">Laporan</li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link ">
+                        <i class="fas fa-file-pdf nav-icon"></i>
+                        <p>
+                        Produk
+                        <span class="right badge badge-danger">Belum</span>
                         </p>
                     </a>
                 </li>

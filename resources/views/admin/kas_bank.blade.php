@@ -35,6 +35,7 @@
                     <div class="card">
                         <div class="card-header">
                             <button id="btn-add" class="btn btn-info"><i class="fas fa-plus-circle"></i> Tambah Data</button>
+                            <button id="btn-print" class="btn btn-secondary" data-toggle="modal" data-target="#modal-print-kas-bank"><i class="fas fa-print"></i> Print</button>
                         </div>
                         <div class="card-content collapse show">
                             <div class="card-body card-dashboard">
@@ -73,52 +74,6 @@
                 </div>
             </div>
         </section>
-
-        {{-- DataTables Dana Keluar--}}
-        {{-- <section id="configuration">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <button id="btn-add-keluar" class="btn btn-info"><i class="fas fa-plus-circle"></i> Tambah Data</button>
-                        </div>
-                        <div class="card-content collapse show">
-                            <div class="card-body card-dashboard">
-                            <p class="card-text"></p>
-                                <div class="table-responsive">
-                                <table id="tbl_kas_keluar" class="table table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Tanggal</th>
-                                        <th>Dana</th>
-                                        <th>Sumber Dana</th>
-                                        <th>Bank</th>
-                                        <th>Jumlah</th>
-                                        <th>Keterangan</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Tanggal</th>
-                                        <th>Dana</th>
-                                        <th>Sumber Dana</th>
-                                        <th>Bank</th>
-                                        <th>Jumlah</th>
-                                        <th>Keterangan</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section> --}}
     </div>
 </section>
 
@@ -199,6 +154,8 @@
     </div>
 </div>
 {{-- End Modal Masuk--}}
+
+@include('extend.modal_print_kas_bank')
 
 @push('js')
 <!-- JS DataTables -->
@@ -398,7 +355,12 @@
         })
     });
 
+
+
+
+
 </script>
+
 
 @endpush
 

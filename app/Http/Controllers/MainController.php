@@ -40,7 +40,7 @@ class MainController extends Controller
         $total_saldo = $result + $kas_besar + $result_kecil;
         $coun = "Rp. ".number_format($total_saldo,0,',','.');
 
-        $pendapatan = abs($saldo_sell - $saldo_buy);
+        $pendapatan = ($saldo_sell - $saldo_buy);
         $cuan = "Rp. ".number_format($pendapatan,0,',','.');
 
         return view('admin.index', ['count_bank' => $coun_bank, 'count' => $coun, 'count_besar' => $coun_besar, 'count_kecil' => $coun_kecil, 'saldo_buy_' => $saldo_buy_, 'saldo_sell_' => $saldo_sell_, 'cuan' => $cuan ]);
@@ -87,6 +87,7 @@ class MainController extends Controller
     public function getDataCash()
     {
         $data = Cash::Where('sumber_dana', '=', 'Kas Bank')
+                    ->latest()
                     ->get();
 
         //$data = Cash::all();
@@ -162,6 +163,7 @@ class MainController extends Controller
     public function getDataKasBesar()
     {
         $data = Cash::Where('sumber_dana', '=', 'Kas Besar')
+                    ->latest()
                     ->get();
 
         //$data = Cash::all();
@@ -218,6 +220,7 @@ class MainController extends Controller
     public function getDataKasKecil()
     {
         $data = Cash::Where('sumber_dana', '=', 'Kas Kecil')
+                    ->latest()
                     ->get();
 
         //$data = Cash::all();
@@ -260,5 +263,35 @@ class MainController extends Controller
             [
                 'data'    => $data,
             ]);
+    }
+
+    public function PrintKB($from_date, $to_date){
+
+        $cetak_KB = Cash::where('sumber_dana', '=', 'Kas Bank')->whereBetween('tanggal',[$from_date, $to_date])->latest()->get();
+        $sum = $cetak_KB->sum('jumlah');
+
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        return view('extend.print_KB', compact('cetak_KB', 'today', 'sum'));
+    }
+
+    public function PrintKBs($from_date, $to_date){
+
+        $cetak_KB = Cash::where('sumber_dana', '=', 'Kas Besar')->whereBetween('tanggal',[$from_date, $to_date])->latest()->get();
+        $sum = $cetak_KB->sum('jumlah');
+        
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        return view('extend.print_KBs', compact('cetak_KB', 'today', 'sum'));
+    }
+
+    public function PrintKC($from_date, $to_date){
+
+        $cetak_KB = Cash::where('sumber_dana', '=', 'Kas Kecil')->whereBetween('tanggal',[$from_date, $to_date])->latest()->get();
+        $sum = $cetak_KB->sum('jumlah');
+        
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        return view('extend.print_Kecil', compact('cetak_KB', 'today', 'sum'));
     }
 }
