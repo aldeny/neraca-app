@@ -6,6 +6,7 @@ use App\Models\Sell;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use DateTime;
 
 class SellController extends Controller
 {
@@ -22,6 +23,7 @@ class SellController extends Controller
             'jumlah_item' => 'required',
             'harga_jual' => 'required',
             'total' => 'required',
+            'tanggal_jual' => 'required',
             'keterangan' => 'required',
         ]);
 
@@ -30,6 +32,7 @@ class SellController extends Controller
         $save -> jumlah_item = $request -> jumlah_item;
         $save -> harga_jual = $request -> harga_jual;
         $save -> total = $request -> total;
+        $save -> tanggal_jual = $request -> tanggal_jual;
         $save -> keterangan = $request -> keterangan;
         $data = $save -> save();
 
@@ -67,7 +70,7 @@ class SellController extends Controller
                 return $dt;
             })
             ->addColumn('tanggal', function($data){
-                $dt = $data->created_at ? with(new Carbon($data->created_at))->format('d-M-Y') : '';
+                $dt = $data->tanggal_jual ? with(new Carbon($data->tanggal_jual))->format('d-M-Y') : '';
                 return $dt;
             })
             ->addColumn('keterangan', function($data){
@@ -75,8 +78,18 @@ class SellController extends Controller
                 return $dt;
             })
             ->addColumn('aksi', function($data){
-            $btn = "<button class='btn btn-danger btn-sm btn-delete' data-id='".$data->id."'><i class='fas fa-trash-alt'></i></button>";
+            $btn = "<button class='btn btn-danger btn-sm btn-delete' data-product='".$data->product_id."' data-jumlah='".$data->jumlah_item."' data-id='".$data->id."'><i class='fas fa-trash-alt'></i></button>";
 
+            $btn_dis= "<button class='btn btn-danger btn-sm disabled'><i class='fas fa-trash-alt'></i></button>";
+
+
+            $dt_awal = new DateTime(now());
+            $dt_akhir = new DateTime($data->created_at);
+            $selisih = $dt_awal->diff($dt_akhir);
+
+            if ($selisih->days >= 1) {
+                return $btn_dis;
+            }
                 return $btn;
             })
             ->rawColumns(['nama_barang','jumlah_item','harga_jual','total','tanggal','keterangan','aksi'])
@@ -89,17 +102,36 @@ class SellController extends Controller
             ]);
     }
 
+    public function deleteIdSell(Request $request)
+    {
+        $product = Product::findOrFail($request->product);
+        $product->qty += $request->jumlah;
+        $product -> save();
+
+        $delete = Sell::findOrfail($request->id);
+        $delete->delete();
+
+        if ($delete) {
+            return response()->json(['success'=>'Data berhasil dihapus']);
+        } else {
+            return response()->json(['error'=>'Data gagal dihapus']);
+
+        }
+    }
+
     public function getAutoLoad($item){
 
         $autoload = Product::findOrfail($item);
         return response()->json($autoload);
     }
 
-    // public function deleteIdBuy($id)
-    // {
-    //     $delete = Buy::findOrfail($id);
-    //     $delete->delete();
+    public function PrintSell($from_date, $to_date){
 
-    //     return back();
-    // }
+        $sell = Sell::whereBetween('tanggal_jual',[$from_date, $to_date])->latest()->get();
+        $sum = $sell->sum('total');
+
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        return view('extend.print_Sell', compact('sell', 'today', 'sum'));
+    }
 }

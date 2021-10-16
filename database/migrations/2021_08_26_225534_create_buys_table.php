@@ -21,6 +21,7 @@ class CreateBuysTable extends Migration
             $table->integer('saldo');
             $table->integer('harga_beli');
             $table->integer('total');
+            $table->date('tanggal_beli');
             $table->string('keterangan');
             $table->timestamps();
         });

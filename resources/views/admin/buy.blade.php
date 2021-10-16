@@ -15,17 +15,6 @@
 
 <section class="content">
     <div class="container-fluid">
-        {{-- <div class="row justify-content-end">
-            <div class="col-12 col-lg-5 col-md-12 text-center">
-            <div class="card bg-success shadow-md">
-                <div class="card-content collapse show" aria-expanded="true">
-                <div class="card-body">
-                    <h2 id="count" class=" text-bold-700 card-text white">asd</h2>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div> --}}
         {{-- DataTables Dana Masuk--}}
         <section id="configuration">
             <div class="row">
@@ -33,6 +22,7 @@
                     <div class="card">
                         <div class="card-header">
                             <button id="btn-add" class="btn btn-info"><i class="fas fa-plus-circle"></i> Tambah Data</button>
+                            <button id="btn-print" class="btn btn-secondary" data-toggle="modal" data-target="#modal-print-buy"><i class="fas fa-print"></i> Print</button>
                         </div>
                         <div class="card-content collapse show">
                             <div class="card-body card-dashboard">
@@ -91,6 +81,10 @@
                     @csrf
                     <div class="form-body">
                         <div class="form-group">
+                            <label for="tanggal" class="font-weight-bold">Tanggal Beli</label>
+                            <input type="date" class="form-control" id="tanggal_beli" name="tanggal_beli">
+                        </div>
+                        <div class="form-group">
                             <label for="nama_item" class="font-weight-bold">Nama Produk</label>
                             <input type="hidden" name="id" id="id" class="form-control" value="">
                             <input type="hidden" name="action" id="action" class="form-control">
@@ -143,6 +137,8 @@
     </div>
 </div>
 {{-- End Modal Masuk--}}
+
+@include('extend.modal_print_buy')
 
 @push('js')
 <!-- JS DataTables -->
@@ -239,6 +235,7 @@
 
         $('#id').val('');
         $('#nama_item').val('');
+        $('#tanggal_beli').val('');
         $('#jumlah_item').val('');
         $('#harga_beli').val('');
         $('#total').val('');
@@ -290,9 +287,6 @@
                         //$("#action").val("");
                         $("#id").val("");
                         $('#modal-add').modal('hide');
-                        },
-                        error : function (error) {
-                            title:error.error
                         }
             });
         }

@@ -21,6 +21,7 @@ class BuyController extends Controller
         // validate
         $request->validate([
             'nama_item' => 'required',
+            'tanggal_beli' => 'required',
             'jumlah_item' => 'required',
             'saldo' => 'required',
             'harga_beli' => 'required',
@@ -30,6 +31,7 @@ class BuyController extends Controller
 
         $save = new Buy;
         $save -> product_id = $request -> nama_item;
+        $save -> tanggal_beli = $request -> tanggal_beli;
         $save -> jumlah_item = $request -> jumlah_item;
         $save -> saldo = $request -> saldo;
         $save -> harga_beli = $request -> harga_beli;
@@ -71,7 +73,7 @@ class BuyController extends Controller
                 return $dt;
             })
             ->addColumn('tanggal', function($data){
-                $dt = $data->created_at ? with(new Carbon($data->created_at))->format('d-M-Y') : '';
+                $dt = $data->tanggal_beli ? with(new Carbon($data->tanggal_beli))->format('d-M-Y') : '';
                 return $dt;
             })
             ->addColumn('keterangan', function($data){
@@ -129,5 +131,15 @@ class BuyController extends Controller
 
         }
 
+    }
+
+    public function PrintBuy($from_date, $to_date){
+
+        $buy = Buy::whereBetween('tanggal_beli',[$from_date, $to_date])->latest()->get();
+        $sum = $buy->sum('total');
+
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        return view('extend.print_Buy', compact('buy', 'today', 'sum'));
     }
 }

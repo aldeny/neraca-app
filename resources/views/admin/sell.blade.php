@@ -21,6 +21,7 @@
                     <div class="card">
                         <div class="card-header">
                             <button id="btn-add" class="btn btn-info"><i class="fas fa-plus-circle"></i> Tambah Data</button>
+                            <button id="btn-print" class="btn btn-secondary" data-toggle="modal" data-target="#modal-print-sell"><i class="fas fa-print"></i> Print</button>
                         </div>
                         <div class="card-content collapse show">
                             <div class="card-body card-dashboard">
@@ -76,6 +77,10 @@
                 <form class="form" id="form-add" method="POST">
                     @csrf
                     <div class="form-body">
+                        <div class="form-group">
+                            <label for="tanggal" class="font-weight-bold">Tanggal Jual</label>
+                            <input type="date" class="form-control" id="tanggal_jual" name="tanggal_jual">
+                        </div>
                         <div class="form-row">
                             <div class="col-9">
                                 <div class="form-group">
@@ -112,7 +117,7 @@
                         <div class="form-group">
                             <label for="projectinput1" class="font-weight-bold">Total</label>
                             <div class="input-group">
-                                <input type="number" class="form-control"  placeholder="Total" aria-label="Amount (to the nearest dollar)" id="total" name="total">
+                                <input type="number" class="form-control"  placeholder="Total" aria-label="Amount (to the nearest dollar)" id="total" name="total" readonly>
                             </div>
                         </div>
                         <div class="form-group">
@@ -130,6 +135,8 @@
     </div>
 </div>
 {{-- End Modal Masuk--}}
+
+@include('extend.modal_print_sell')
 
 @push('js')
 <!-- JS DataTables -->
@@ -240,6 +247,7 @@
 
 				$('#id').val('');
 				$('#nama_barang').val('');
+				$('#tanggal_jual').val('');
 				$('#jumlah_item').val('');
 				$('#harga_beli').val('');
 				$('#total').val('');
@@ -296,47 +304,51 @@
 				}
 		});
 
-		// $(document).on('click', '.btn-delete', function () {
-		// 		var table = $('#tbl_sell').DataTable();
-		// 		let id = $(this).data('id');
-		// 		//let name = $(this).attr('data-name')
-		// 		alert(id);
-		// 		var token = $("meta[name='csrf-token']").attr("content");
-		// 		//alert(token);
+		$(document).on('click', '.btn-delete', function () {
+				var table = $('#tbl_sell').DataTable();
+				let id = $(this).data('id');
+				let jumlah = $(this).data('jumlah');
+				let product = $(this).data('product');
+				var token = $("meta[name='csrf-token']").attr("content");
+				alert(id);
+				alert(jumlah);
+				alert(product);
 
-		// 		Swal.fire({
-		// 		title: 'Kamu yakin?',
-		// 		text: "Data akan dihapus secara permanen loh...",
-		// 		icon: 'warning',
-		// 		showCancelButton: true,
-		// 		confirmButtonColor: '#3085d6',
-		// 		cancelButtonColor: '#d33',
-		// 		confirmButtonText: 'Ya, hapus!'
-		// 		}).then((result) => {
-		// 				if (result.isConfirmed) {
-		// 						// window.location = "/super/delete/"+id+""
+				Swal.fire({
+				title: 'Kamu yakin?',
+				text: "Data akan dihapus secara permanen loh...",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Ya, hapus!'
+				}).then((result) => {
+						if (result.isConfirmed) {
+								// window.location = "/super/delete/"+id+""
 
-		// 						$.ajax({
-		// 								type: "post",
-		// 								url: "/asset/delete/"+id,
-		// 								data: {
-		// 										"id": id,
-		// 										"_token": token,
-		// 								},
-		// 								success: function (response) {
-		// 										Swal.fire(
-		// 										'Terhapus!',
-		// 										'Data berhasil dihapus.',
-		// 										'success'
-		// 										)
-		// 										table.ajax.reload();
-		// 										$('#count').load(' #count');
-		// 										//refreshTable();
-		// 								}
-		// 						});
-		// 				}
-		// 		})
-		// });
+								$.ajax({
+										type: "post",
+										url: "{{ route('sellDelete') }}",
+										data: {
+												"id": id,
+												"jumlah": jumlah,
+												"product": product,
+												"_token": token,
+										},
+										success: function (response) {
+												Swal.fire(
+												'Terhapus!',
+												'Data berhasil dihapus.',
+												'success'
+												)
+												table.ajax.reload();
+												$('#count').load(' #count');
+												//refreshTable();
+										}
+								});
+						}
+				})
+		});
 
 </script>
 

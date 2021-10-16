@@ -16,6 +16,7 @@ class CreateSellsTable extends Migration
         Schema::create('sells', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->onDelete('cascade');
+            $table->date('tanggal_jual');
             $table->integer('jumlah_item');
             $table->integer('harga_jual');
             $table->integer('total');

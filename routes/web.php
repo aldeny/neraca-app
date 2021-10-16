@@ -59,6 +59,7 @@ Route::get('/sell/index', [SellController::class, 'SellIndex'])->name('index_sel
 Route::post('/sell/addSell', [SellController::class, 'SellAddData'])->name('sell.add.data');
 Route::get('/sell/getData', [SellController::class, 'SellgetData'])->name('getDataSell');
 Route::get('/sell/autoLoad/{item}', [SellController::class, 'getAutoLoad']);
+Route::post('/sell/delete', [SellController::class, 'deleteIdSell'])->name('sellDelete');
 
 
 /* Bank */
@@ -121,3 +122,5 @@ Route::post('/history/delete/', [CreditController::class, 'deleteIdHistoryCredit
 Route::get('/print/kasBank/{from_date}/{to_date}', [MainController::class, 'PrintKB'])->name('print.kb');
 Route::get('/print/kasBesar/{from_date}/{to_date}', [MainController::class, 'PrintKBs'])->name('print.kbs');
 Route::get('/print/kasKecil/{from_date}/{to_date}', [MainController::class, 'PrintKC'])->name('print.kc');
+Route::get('/print/buy/{from_date}/{to_date}', [BuyController::class, 'PrintBuy'])->name('print.buy');
+Route::get('/print/sell/{from_date}/{to_date}', [SellController::class, 'PrintSell'])->name('print.sell');
