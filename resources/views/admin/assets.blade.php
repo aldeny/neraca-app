@@ -24,6 +24,11 @@
                             <form id="form-add" action="{{ route('save.asset') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
+                                    <label for="tanggal" class="font-weight-bold">Tanggal</label>
+                                    <input type="date" class="form-control" id="tanggal_aset" name="tanggal_aset">
+                                    <span class="text-danger error-text tanggal_aset_error"></span>
+                                </div>
+                                <div class="form-group">
                                     <label for="nama_barang" class="font-weight-bold">Nama Barang</label>
                                     <input type="hidden" name="id" id="id" class="form-control" value="">
                                     <input type="hidden" name="action" id="action" class="form-control">
@@ -31,7 +36,7 @@
                                     <span class="text-danger error-text nama_barang_error"></span>
                                 </div>
                                 <div class="form-row">
-                                    <div class="col">
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="jumlah_barang" class="font-weight-bold">Jumlah Barang</label>
                                             <input type="number" class="form-control" id="jumlah_barang" name="jumlah_barang"
@@ -39,7 +44,7 @@
                                             <span class="text-danger error-text jumlah_barang_error"></span>
                                         </div>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
                                             <label for="kondisi" class="font-weight-bold">Kondisi</label>
                                             <select class="custom-select" name="kondisi" id="kondisi">
@@ -48,6 +53,18 @@
                                                 <option value="2">Rusak</option>
                                             </select>
                                             <span class="text-danger error-text kondisi_error"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label for="saldo" class="font-weight-bold">Saldo</label>
+                                            <select class="custom-select" name="saldo" id="saldo">
+                                                <option value="">--Pilih Kondisi--</option>
+                                                <option value="1">Saldo Kas Bank</option>
+                                                <option value="2">Saldo Kas Besar</option>
+                                                <option value="3">Saldo Kas Kecil</option>
+                                            </select>
+                                            <span class="text-danger error-text saldo_error"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -104,7 +121,14 @@
                         <div class="card card-info">
                             <div class="card-header">
                                 <div class="card-text">
-                                    <h4>Data Aset</h4>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h4>Data Aset</h4>
+                                        </div>
+                                        <div class="col">
+                                            <button id="btn-print" class=" float-right btn btn-secondary" data-toggle="modal" data-target="#modal-print-aset"><i class="fas fa-print"></i> Print</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-content collapse show">
@@ -117,6 +141,8 @@
                                                     <th>No</th>
                                                     <th>Gambar</th>
                                                     <th>Nama Barang</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Saldo</th>
                                                     <th>Jumlah</th>
                                                     <th>Harga</th>
                                                     <th>Total</th>
@@ -126,6 +152,8 @@
                                             </thead>
                                             <tfoot>
                                                 <tr>
+                                                    <th>&nbsp;</th>
+                                                    <th>&nbsp;</th>
                                                     <th>&nbsp;</th>
                                                     <th>&nbsp;</th>
                                                     <th>&nbsp;</th>
@@ -147,7 +175,10 @@
         </div>
     </section>
 
-    @include('extend.modal_aset_edit');
+    @include('extend.modal_print_aset')
+
+    @include('extend.modal_aset_edit')
+
 
 
     @push('js')
@@ -291,6 +322,14 @@
                             name: 'nama_barang'
                         },
                         {
+                            data: 'saldo',
+                            name: 'saldo'
+                        },
+                        {
+                            data: 'tanggal_aset',
+                            name: 'tanggal_aset'
+                        },
+                        {
                             data: 'jumlah_barang',
                             name: 'jumlah_barang'
                         },
@@ -325,6 +364,8 @@
                     $(modal_edit).modal('show');
                     $(modal_edit).find('form').find('input[name="id"]').val(data.result.id);
                     $(modal_edit).find('form').find('input[name="nama_barang"]').val(data.result.nama_barang);
+                    $(modal_edit).find('form').find('input[name="tanggal_aset_edit"]').val(data.result.tanggal_beli_aset);
+                    $(modal_edit).find('form').find('[name="saldo_edit"] option[value="'+data.result.saldo+'"]').prop('selected', true)
                     $(modal_edit).find('form').find('input[name="jumlah_barang_edit"]').val(data.result.jumlah);
                     $(modal_edit).find('form').find('input[name="harga_edit"]').val(data.result.harga);
                     $(modal_edit).find('form').find('input[name="total_edit"]').val(data.result.total);

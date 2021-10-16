@@ -6,6 +6,7 @@ use App\Models\Aset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 class AssetsController extends Controller
 {
@@ -18,7 +19,9 @@ class AssetsController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nama_barang' => 'required',
+            'tanggal_aset' => 'required',
             'jumlah_barang' => 'required',
+            'saldo' => 'required',
             'harga' => 'required',
             'total' => 'required',
             'kondisi' => 'required',
@@ -27,6 +30,8 @@ class AssetsController extends Controller
         ],
         [
             'nama_barang.required' => 'Nama barang/aset tidak boleh kosong',
+            'tanggal_aset.required' => 'Tanggal tidak boleh kosong',
+            'saldo.required' => 'Saldo tidak boleh kosong',
             'jumlah_barang.required' => 'Jumlah tidak boleh kosong',
             'harga.required' => 'Harga tidak boleh kosong',
             'total.required' => 'Total tidak boleh kosong',
@@ -46,6 +51,8 @@ class AssetsController extends Controller
 
             $db = new Aset;
             $db -> nama_barang = $request ->nama_barang;
+            $db -> tanggal_beli_aset = $request ->tanggal_aset;
+            $db -> saldo = $request ->saldo;
             $db -> jumlah = $request ->jumlah_barang;
             $db -> harga = $request ->harga;
             $db -> total = $request ->total;
@@ -76,6 +83,19 @@ class AssetsController extends Controller
             ->addColumn('nama_barang', function($data){
                 return $data->nama_barang;
             })
+            ->addColumn('tanggal_aset', function($data){
+                $dt = $data->tanggal_beli_aset ? with(new Carbon($data->tanggal_beli_aset))->format('d-M-Y') : '';
+                return $dt;
+            })
+            ->addColumn('saldo', function($data){
+                if ($data->saldo == 1) {
+                    return 'Kas Bank';
+                } elseif ($data->saldo == 2) {
+                    return 'Kas Besar';
+                } else {
+                    return 'Kas Kecil';
+                }
+            })
             ->addColumn('jumlah_barang', function($data){
                 return $data->jumlah;
             })
@@ -104,7 +124,7 @@ class AssetsController extends Controller
                 $btn .= "<button class='btn btn-danger btn-sm' data-id='".$data->id."' id='btn-delete'>Delete</button>";
                 return $btn;
             })
-            ->rawColumns(['gambar','nama_barang','jumlah_barang','harga','total','kondisi','aksi'])
+            ->rawColumns(['gambar','nama_barang','tanggal_aset','saldo','jumlah_barang','harga','total','kondisi','aksi'])
             ->make(true);
         }
 
@@ -123,6 +143,8 @@ class AssetsController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nama_barang' => 'required',
+            'tanggal_aset_edit' => 'required',
+            'saldo_edit' => 'required',
             'jumlah_barang_edit' => 'required',
             'harga_edit' => 'required',
             'total_edit' => 'required',
@@ -132,6 +154,8 @@ class AssetsController extends Controller
         ],
         [
             'nama_barang.required' => 'Nama barang/aset tidak boleh kosong',
+            'tanggal_aset_edit.required' => 'Tanggal tidak boleh kosong',
+            'saldo_edit.required' => 'Nama barang/aset tidak boleh kosong',
             'jumlah_barang_edit.required' => 'Jumlah tidak boleh kosong',
             'harga_edit.required' => 'Harga tidak boleh kosong',
             'total_edit.required' => 'total tidak boleh kosong',
@@ -163,6 +187,8 @@ class AssetsController extends Controller
                     $id_asset = $request->id;
                     $update = Aset::find($id_asset);
                     $update -> nama_barang = $request -> nama_barang;
+                    $update -> tanggal_beli_aset = $request -> tanggal_aset_edit;
+                    $update -> saldo = $request -> saldo_edit;
                     $update -> jumlah = $request -> jumlah_barang_edit;
                     $update -> harga = $request -> harga_edit;
                     $update -> total = $request -> total_edit;
@@ -178,6 +204,8 @@ class AssetsController extends Controller
                 $id_asset = $request->id;
                 $update = Aset::find($id_asset);
                 $update -> nama_barang = $request -> nama_barang;
+                $update -> tanggal_beli_aset = $request -> tanggal_aset_edit;
+                $update -> saldo = $request -> saldo_edit;
                 $update -> jumlah = $request -> jumlah_barang_edit;
                 $update -> harga = $request -> harga_edit;
                 $update -> total = $request -> total_edit;
@@ -208,5 +236,15 @@ class AssetsController extends Controller
             return response()->json(['code'=>0, 'pesan'=>'Data gagal dihapus']);
         }
 
+    }
+
+    public function PrintAset($from_date, $to_date){
+
+        $aset = Aset::whereBetween('tanggal_beli_aset',[$from_date, $to_date])->latest()->get();
+        $sum = $aset->sum('total');
+
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        return view('extend.print_Aset', compact('aset', 'today', 'sum'));
     }
 }
