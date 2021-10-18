@@ -125,3 +125,4 @@ Route::get('/print/kasKecil/{from_date}/{to_date}', [MainController::class, 'Pri
 Route::get('/print/buy/{from_date}/{to_date}', [BuyController::class, 'PrintBuy'])->name('print.buy');
 Route::get('/print/sell/{from_date}/{to_date}', [SellController::class, 'PrintSell'])->name('print.sell');
 Route::get('/print/aset/{from_date}/{to_date}', [AssetsController::class, 'PrintAset'])->name('print.aset');
+Route::get('/print/employee/{from_date}/{to_date}', [EmployeeController::class, 'PrintEmployee'])->name('print.employee');

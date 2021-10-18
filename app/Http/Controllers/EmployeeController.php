@@ -22,6 +22,7 @@ class EmployeeController extends Controller
         /* Validate */
         $request->validate([
             'nama_lengkap' => 'required',
+            'tanggal_kar' => 'required',
             'jabatan' => 'required',
             'jenis_kelamin' => 'required',
             'status' => 'required',
@@ -29,6 +30,7 @@ class EmployeeController extends Controller
         ],
         [
             'nama_lengkap.required' => 'Nama karyawan tidak boleh kosong',
+            'tanggal_kar.required' => 'Nama karyawan tidak boleh kosong',
             'jabatan.required' => 'Jabatan tidak boleh kosong',
             'jenis_kelamin.required' => 'Jenis kelamin tidak boleh kosong',
             'status.required' => 'Status tidak boleh kosong',
@@ -39,6 +41,7 @@ class EmployeeController extends Controller
 
         $insert = new Employee;
         $insert -> nama = $request -> nama_lengkap;
+        $insert -> tanggal = $request -> tanggal_kar;
         $insert -> position_id = $request -> jabatan;
         $insert -> jenis_kelamin = $request -> jenis_kelamin;
         $insert -> status = $request -> status;
@@ -123,7 +126,10 @@ class EmployeeController extends Controller
     public function PayEmployee(Request $request){
 
         $pay = new Payment;
+        $pay -> employee_id = $request -> id;
+        $pay -> tanggal = $request -> tanggal_kar;
         $pay -> nama = $request -> nama_lengkap;
+        $pay -> position_id = $request -> jabatan;
         $pay -> gaji = $request -> gaji;
         $save = $pay -> save();
 
@@ -150,7 +156,7 @@ class EmployeeController extends Controller
                 return $dt;
             })
             ->addColumn('created_at', function($data){
-                $dt = $data->created_at ? with(new Carbon($data->created_at))->format('d-M-Y') : '';
+                $dt = $data->tanggal ? with(new Carbon($data->tanggal))->format('d-M-Y') : '';
                 return $dt;
             })
             ->addColumn('aksi', function($data){
@@ -231,5 +237,15 @@ class EmployeeController extends Controller
         } else {
             return response()->json(['error' => 'Data gagal dihapus']);
         }
+    }
+
+    public function PrintEmployee($from_date, $to_date){
+
+        $employee = Payment::whereBetween('tanggal',[$from_date, $to_date])->latest()->get();
+        $sum = $employee->sum('gaji');
+
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        return view('extend.print_Employee', compact('employee', 'today', 'sum'));
     }
 }

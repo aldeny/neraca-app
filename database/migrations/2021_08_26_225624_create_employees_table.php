@@ -20,6 +20,7 @@ class CreateEmployeesTable extends Migration
             $table->string('jenis_kelamin');
             $table->string('status');
             $table->integer('gaji');
+            $table->date('tanggal');
             $table->timestamps();
         });
     }

@@ -15,4 +15,9 @@ class Position extends Model
     {
         return $this->hasOne(Employee::class);
     }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
 }

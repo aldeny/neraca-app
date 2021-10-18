@@ -83,6 +83,7 @@
               <div class="col-12">
                   <div class="card">
                     <div class="card-header bg-info">
+                        <button id="btn-print" class=" float-right btn btn-secondary" data-toggle="modal" data-target="#modal-print-employee"><i class="fas fa-print"></i> Print</button>
                     </div>
                       <div class="card-content collapse show">
                           <div class="card-body card-dashboard">
@@ -132,6 +133,11 @@
                 <form class="form" id="form-add" method="POST">
                     @csrf
                     <div class="form-body">
+                        <div class="form-group">
+                            <label for="tanggal" class="font-weight-bold">Tanggal</label>
+                            <input type="date" class="form-control" name="tanggal_kar" id="tanggal_kar">
+                            <span class="text-danger" id="tanggal_karError"></span>
+                        </div>
                         <div class="form-group">
                             <label for="nama-karyawan" class="font-weight-bold">Nama</label>
                             <input type="hidden" name="id" id="id" class="form-control" value="">
@@ -190,6 +196,8 @@
     </div>
 </div>
 {{-- End Modal Masuk--}}
+
+@include('extend.modal_print_employee')
 
 @push('js')
 <!-- JS DataTables -->
@@ -314,6 +322,7 @@
 
         $('#id').val('');
         $('#nama_lengkap').val('');
+        $('#tanggal_kar').val('');
         $('#jabatan').val('');
         $('#jenis_kelamin').val('');
         $('#status').val('');
@@ -330,8 +339,9 @@
         $('.btn-action').html('Bayar');
 
         $('#id').val('');
+        $('#tanggal_kar').val('');
         document.getElementById("nama_lengkap").readOnly = true;
-        document.getElementById("jabatan").disabled = true;
+        document.getElementById("jabatan").readOnly = true;
         document.getElementById("jenis_kelamin").disabled = true;
         document.getElementById("status").disabled = true;
         document.getElementById("gaji").readOnly = true;
@@ -342,6 +352,7 @@
             dataType: "json",
             success: function (html) {
                 $("#id").val(html.emplo.id);
+                $("#tanggal_kar").val(html.emplo.tanggal);
                 $('#nama_lengkap').val(html.emplo.nama);
                 $('[name="jenis_kelamin"] option[value="'+html.emplo.jenis_kelamin+'"]').prop('selected', true);
                 $('[name="status"] option[value="'+html.emplo.status+'"]').prop('selected', true);
@@ -363,6 +374,7 @@
 
         $('#id').val('');
         $('#nama_lengkap').val('');
+        $('#tanggal_kar').val('');
         $('#jabatan').val('');
         $('#jenis_kelamin').val('');
         $('#status').val('');
@@ -375,6 +387,7 @@
             success: function (html) {
                 $("#id").val(html.emplo.id);
                 $('#nama_lengkap').val(html.emplo.nama);
+                $('#tanggal_kar').val(html.emplo.tanggal);
                 $('[name="jenis_kelamin"] option[value="'+html.emplo.jenis_kelamin+'"]').prop('selected', true);
                 $('[name="status"] option[value="'+html.emplo.status+'"]').prop('selected', true);
                 $("#e2 option:selected").text();
@@ -430,6 +443,7 @@
                     $("#id").val("");
                     $('#modal-add').modal('hide');
                     $('#namaError').text('');
+                    $('#tanggal_karError').text('');
                     $('#jabatanError').text('');
                     $('#jenis_kelaminError').text('');
                     $('#statusError').text('');
@@ -437,6 +451,7 @@
                 },
                 error: function (error) {
                     $('#namaError').text(error.responseJSON.errors.nama);
+                    $('#tanggal_karError').text(error.responseJSON.errors.tanggal);
                     $('#jabatanError').text(error.responseJSON.errors.jabatan);
                     $('#jenis_kelaminError').text(error.responseJSON.errors.jenis_kelamin);
                     $('#statusError').text(error.responseJSON.errors.status);
@@ -485,6 +500,7 @@
                     $("#id").val("");
                     $('#modal-add').modal('hide');
                     $('#namaError').text('');
+                    $('#tanggal_karError').text('');
                     $('#jabatanError').text('');
                     $('#jenis_kelaminError').text('');
                     $('#statusError').text('');
@@ -492,6 +508,7 @@
                 },
                 error: function (error) {
                     $('#namaError').text(error.responseJSON.errors.nama);
+                    $('#tanggal_karError').text(error.responseJSON.errors.tanggal);
                     $('#jabatanError').text(error.responseJSON.errors.jabatan);
                     $('#jenis_kelaminError').text(error.responseJSON.errors.jenis_kelamin);
                     $('#statusError').text(error.responseJSON.errors.status);

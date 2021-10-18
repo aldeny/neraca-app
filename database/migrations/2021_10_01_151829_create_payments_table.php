@@ -16,7 +16,10 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->foreignId('position_id');
+            $table->foreignId('employee_id');
             $table->integer('gaji');
+            $table->date('tanggal');
             $table->timestamps();
         });
     }
