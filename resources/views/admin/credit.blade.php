@@ -26,8 +26,10 @@
                 <div class="card-content collapse show">
                     <div class="card-header">
                         <button type="button" class="btn btn-success" data-toggle="modal" id="btn-add-credit">
+                            <i class="fas fa-plus-circle"></i>
                             Tambah Data
                         </button>
+                        <button id="btn-print" class=" float-right btn btn-secondary" data-toggle="modal" data-target="#modal-print-credit"><i class="fas fa-print"></i> Print</button>
                     </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -37,6 +39,7 @@
                                     <th>No</th>
                                     <th>Nama Barang</th>
                                     <th>Tanggal Beli</th>
+                                    <th>Saldo</th>
                                     <th>Harga</th>
                                     <th>Bayar</th>
                                     <th>Sisa</th>
@@ -49,6 +52,7 @@
                                     <th>No</th>
                                     <th>Nama Barang</th>
                                     <th>Tanggal Beli</th>
+                                    <th>Saldo</th>
                                     <th>Harga</th>
                                     <th>Bayar</th>
                                     <th>Sisa</th>
@@ -72,7 +76,8 @@
               <div class="card">
                   <div class="card-content collapse show">
                       <div class="card-header">
-                          <h3>Histori Pembayaran</h3>
+                          <h3 class="float-left">Histori Pembayaran</h3>
+                          <button id="btn-print" class=" float-right btn btn-secondary" data-toggle="modal" data-target="#modal-print-credit-history"><i class="fas fa-print"></i> Print</button>
                       </div>
                   <div class="card-body">
                       <div class="table-responsive">
@@ -82,6 +87,7 @@
                                       <th>No</th>
                                       <th>Nama Barang</th>
                                       <th>Tanggal Bayar</th>
+                                      <th>Saldo</th>
                                       <th>Bayar</th>
                                       <th>Keterangan</th>
                                       <th>Aksi</th>
@@ -92,6 +98,7 @@
                                       <th>No</th>
                                       <th>Nama Barang</th>
                                       <th>Tanggal Bayar</th>
+                                      <th>Saldo</th>
                                       <th>Bayar</th>
                                       <th>Keterangan</th>
                                       <th>Aksi</th>
@@ -163,10 +170,26 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="keterangan-bayar" class="font-weight-bold">Keterangan</label>
-                            <textarea class="form-control" name="ket_bayar" id="ket_bayar" placeholder="Keterangan"></textarea>
-                            <span class="text-danger" id="ket_bayarError"></span>
+                        <div class="form-row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="saldo" class="font-weight-bold">Saldo</label>
+                                    <select class="custom-select" name="saldo" id="saldo">
+                                        <option value="">--Pilih Kondisi--</option>
+                                        <option value="1">Saldo Kas Bank</option>
+                                        <option value="2">Saldo Kas Besar</option>
+                                        <option value="3">Saldo Kas Kecil</option>
+                                    </select>
+                                    <span class="text-danger error-text saldo_error"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="keterangan-bayar" class="font-weight-bold">Keterangan</label>
+                                    <textarea class="form-control" name="ket_bayar" id="ket_bayar" placeholder="Keterangan"></textarea>
+                                    <span class="text-danger" id="ket_bayarError"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -180,6 +203,11 @@
 </div>
 
 @include('extend.sisa_credit')
+
+@include('extend.modal_print_history')
+
+@include('extend.modal_print_credit')
+
 
 @push('js')
 <!-- JS DataTables -->
@@ -236,6 +264,7 @@
             },
                 {data: 'nama_item', name: 'nama_item'},
                 {data: 'tanggal_beli', name: 'tanggal_beli'},
+                {data: 'saldo', name: 'saldo'},
                 {data: 'harga', name: 'harga'},
                 {data: 'jumlah_bayar', name: 'jumlah_bayar'},
                 {data: 'sisa', name: 'sisa'},
@@ -265,6 +294,7 @@
             },
                 {data: 'nama_barang', name: 'nama_barang'},
                 {data: 'tanggal_bayar', name: 'tanggal_bayar'},
+                {data: 'saldo_histori', name: 'saldo_histori'},
                 {data: 'sisa_bayar', name: 'sisa_bayar'},
                 {data: 'keterangan_histori', name: 'keterangan_histori'},
                 {data: 'aksi', name: 'aksi'},
@@ -340,6 +370,16 @@
                 $('#sisaTanggalBeli').html(html.credit.tanggal_beli);
                 $('#sisaHarga').html(html.credit.harga);
                 $('#sisaSisa').html(html.credit.sisa);
+                if (html.credit.saldo == 1) {
+                    $('#sisaSaldo').html('Kas Bank');
+                }
+                else if(html.credit.saldo == 2)
+                {
+                    $('#sisaSaldo').html('Kas Besar');
+                }
+                else {
+                    $('#sisaSaldo').html('Kas Kecil');
+                }
                 $('#sisaKetBayar').html(html.credit.ket_bayar);
 
             }

@@ -20,6 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->foreignId('employee_id');
             $table->integer('gaji');
             $table->date('tanggal');
+            $table->string('saldo');
             $table->timestamps();
         });
     }

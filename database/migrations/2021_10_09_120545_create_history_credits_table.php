@@ -17,6 +17,7 @@ class CreateHistoryCreditsTable extends Migration
             $table->id();
             $table->foreignId('credit_id');
             $table->string('tanggal_histori');
+            $table->string('saldo_histori');
             $table->integer('sisa_bayar');
             $table->string('keterangan_histori');
             $table->timestamps();

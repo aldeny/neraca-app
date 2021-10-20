@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bank;
 use App\Models\Buy;
 use App\Models\Cash;
+use App\Models\Credit;
 use App\Models\Sell;
 use Carbon\Carbon;
 use DateTime;
@@ -43,7 +44,10 @@ class MainController extends Controller
         $pendapatan = ($saldo_sell - $saldo_buy);
         $cuan = "Rp. ".number_format($pendapatan,0,',','.');
 
-        return view('admin.index', ['count_bank' => $coun_bank, 'count' => $coun, 'count_besar' => $coun_besar, 'count_kecil' => $coun_kecil, 'saldo_buy_' => $saldo_buy_, 'saldo_sell_' => $saldo_sell_, 'cuan' => $cuan ]);
+        $credit = Credit::all()->sum('sisa');
+        $piutang = "Rp. ".number_format($credit,0,',','.');
+
+        return view('admin.index', ['count_bank' => $coun_bank, 'count' => $coun, 'count_besar' => $coun_besar, 'count_kecil' => $coun_kecil, 'saldo_buy_' => $saldo_buy_, 'saldo_sell_' => $saldo_sell_, 'cuan' => $cuan, 'piutang' => $piutang]);
     }
 
     public function getIndexKasBank()
@@ -279,7 +283,7 @@ class MainController extends Controller
 
         $cetak_KB = Cash::where('sumber_dana', '=', 'Kas Besar')->whereBetween('tanggal',[$from_date, $to_date])->latest()->get();
         $sum = $cetak_KB->sum('jumlah');
-        
+
         $today = Carbon::now()->isoFormat('D MMMM Y');
 
         return view('extend.print_KBs', compact('cetak_KB', 'today', 'sum'));
@@ -289,7 +293,7 @@ class MainController extends Controller
 
         $cetak_KB = Cash::where('sumber_dana', '=', 'Kas Kecil')->whereBetween('tanggal',[$from_date, $to_date])->latest()->get();
         $sum = $cetak_KB->sum('jumlah');
-        
+
         $today = Carbon::now()->isoFormat('D MMMM Y');
 
         return view('extend.print_Kecil', compact('cetak_KB', 'today', 'sum'));

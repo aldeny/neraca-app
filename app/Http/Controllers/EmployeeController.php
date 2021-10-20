@@ -21,16 +21,16 @@ class EmployeeController extends Controller
 
         /* Validate */
         $request->validate([
-            'nama_lengkap' => 'required',
-            'tanggal_kar' => 'required',
+            'tanggal' => 'required',
+            'nama' => 'required',
             'jabatan' => 'required',
             'jenis_kelamin' => 'required',
             'status' => 'required',
             'gaji' => 'required',
         ],
         [
-            'nama_lengkap.required' => 'Nama karyawan tidak boleh kosong',
-            'tanggal_kar.required' => 'Nama karyawan tidak boleh kosong',
+            'tanggal.required' => 'Tanggal tidak boleh kosong',
+            'nama.required' => 'Nama karyawan tidak boleh kosong',
             'jabatan.required' => 'Jabatan tidak boleh kosong',
             'jenis_kelamin.required' => 'Jenis kelamin tidak boleh kosong',
             'status.required' => 'Status tidak boleh kosong',
@@ -40,8 +40,8 @@ class EmployeeController extends Controller
         /* Insert data into database */
 
         $insert = new Employee;
-        $insert -> nama = $request -> nama_lengkap;
-        $insert -> tanggal = $request -> tanggal_kar;
+        $insert -> tanggal = $request -> tanggal;
+        $insert -> nama = $request -> nama;
         $insert -> position_id = $request -> jabatan;
         $insert -> jenis_kelamin = $request -> jenis_kelamin;
         $insert -> status = $request -> status;
@@ -127,10 +127,11 @@ class EmployeeController extends Controller
 
         $pay = new Payment;
         $pay -> employee_id = $request -> id;
-        $pay -> tanggal = $request -> tanggal_kar;
-        $pay -> nama = $request -> nama_lengkap;
+        $pay -> tanggal = $request -> tanggal;
+        $pay -> nama = $request -> nama;
         $pay -> position_id = $request -> jabatan;
         $pay -> gaji = $request -> gaji;
+        $pay -> saldo = $request -> saldo;
         $save = $pay -> save();
 
         if ($save) {
@@ -155,6 +156,16 @@ class EmployeeController extends Controller
                 $dt = "Rp. ".number_format($data->gaji,0,',','.');
                 return $dt;
             })
+            ->addColumn('saldo', function($data){
+                if ($data->saldo == 1) {
+                    return 'Kas Bank';
+                } elseif ($data->saldo == 2) {
+                    return 'Kas Besar';
+                } else {
+                    return 'Kas Kecil';
+                }
+
+            })
             ->addColumn('created_at', function($data){
                 $dt = $data->tanggal ? with(new Carbon($data->tanggal))->format('d-M-Y') : '';
                 return $dt;
@@ -173,7 +184,7 @@ class EmployeeController extends Controller
                 return $btn;
             })
 
-            ->rawColumns(['nama','gaji','created_at','aksi'])
+            ->rawColumns(['nama','gaji','saldo','created_at','aksi'])
             ->make(true);
         }
 
@@ -197,14 +208,14 @@ class EmployeeController extends Controller
     public function UpdateEmployee(Request $request){
 
         $request->validate([
-            'nama_lengkap' => 'required',
+            'nama' => 'required',
             'jabatan' => 'required',
             'jenis_kelamin' => 'required',
             'status' => 'required',
             'gaji' => 'required',
         ],
         [
-            'nama_lengkap.required' => 'Nama karyawan tidak boleh kosong',
+            'nama.required' => 'Nama karyawan tidak boleh kosong',
             'jabatan.required' => 'Jabatan tidak boleh kosong',
             'jenis_kelamin.required' => 'Jenis kelamin tidak boleh kosong',
             'status.required' => 'Status tidak boleh kosong',
@@ -213,7 +224,7 @@ class EmployeeController extends Controller
 
         $id_employee = $request->id;
         $update = Employee::find($id_employee);
-        $update -> nama = $request -> nama_lengkap;
+        $update -> nama = $request -> nama;
         $update -> position_id = $request -> jabatan;
         $update -> jenis_kelamin = $request -> jenis_kelamin;
         $update -> status = $request -> status;

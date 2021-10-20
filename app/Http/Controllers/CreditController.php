@@ -21,6 +21,7 @@ class CreditController extends Controller
             'harga' => 'required',
             'jumlah_bayar' => 'required',
             'sisa' => 'required',
+            'saldo' => 'required',
         ],
         [
             'nama_item.required' => 'Nama barang tidak boleh kosong',
@@ -28,6 +29,7 @@ class CreditController extends Controller
             'harga.required' => 'Harga beli tidak boleh kosong',
             'jumlah_bayar.required' => 'Jumlah bayar tidak boleh kosong',
             'sisa.required' => 'Sisa bayar pokok tidak boleh kosong',
+            'saldo.required' => 'Sisa bayar pokok tidak boleh kosong',
         ]);
 
         /* Insert data into database */
@@ -38,6 +40,7 @@ class CreditController extends Controller
         $insert -> harga = $request -> harga;
         $insert -> jumlah_bayar = $request -> jumlah_bayar;
         $insert -> ket_bayar = $request -> ket_bayar;
+        $insert -> saldo = $request -> saldo;
         $insert -> sisa = changeIDRtoNumeric($request -> sisa);
         $save = $insert->save();
 
@@ -45,6 +48,7 @@ class CreditController extends Controller
         $history -> credit_id = $insert -> id;
         $history -> tanggal_histori = $request -> tanggal_beli;
         $history -> sisa_bayar = $request -> jumlah_bayar;
+        $history -> saldo_histori = $request -> saldo;
         $history -> keterangan_histori = $request -> ket_bayar;
         $store = $history -> save();
 
@@ -68,6 +72,16 @@ class CreditController extends Controller
             ->addColumn('tanggal_beli', function($data){
                 $dt = $data->tanggal_beli ? with(new Carbon($data->tanggal_beli))->format('d-M-Y') : '';
                 return $dt;
+            })
+            ->addColumn('saldo', function($data){
+                if ($data->saldo == 1) {
+                    return 'Kas Bank';
+                } elseif ($data->saldo == 2) {
+                    return 'Kas Besar';
+                } else {
+                    return 'Kas Kecil';
+                }
+
             })
             ->addColumn('harga', function($data){
                 $dt = "Rp. ".number_format($data->harga,0,',','.');
@@ -104,7 +118,7 @@ class CreditController extends Controller
                 return $btn;
 
             })
-            ->rawColumns(['nama_item','tanggal_beli','harga','jumlah_bayar','sisa','ket_bayar','aksi'])
+            ->rawColumns(['nama_item','tanggal_beli','saldo','harga','jumlah_bayar','sisa','ket_bayar','aksi'])
             ->make(true);
         }
 
@@ -124,6 +138,7 @@ class CreditController extends Controller
         $credit = new HistoryCredit();
         $credit -> credit_id = $request -> id_sisa;
         $credit -> tanggal_histori = $request -> tanggal_bayar_sisa;
+        $credit -> saldo_histori = $request -> saldo_histori;
         $credit -> sisa_bayar = $request -> jumlah_bayar_sisa;
         $credit -> keterangan_histori = $request -> ket_bayar_sisa;
         $save = $credit -> save();
@@ -155,6 +170,15 @@ class CreditController extends Controller
                 $dt = $data->tanggal_histori ? with(new Carbon($data->tanggal_histori))->format('d-M-Y') : '';
                 return $dt;
             })
+            ->addColumn('saldo_histori', function($data){
+                if ($data->saldo_histori == 1) {
+                    return 'Kas Bank';
+                } elseif ($data->saldo_histori == 2) {
+                    return 'Kas Besar';
+                } else {
+                    return 'Kas Kecil';
+                }
+            })
             ->addColumn('sisa_bayar', function($data){
                 $dt = "Rp. ".number_format($data->sisa_bayar,0,',','.');
                 return $dt;
@@ -169,7 +193,7 @@ class CreditController extends Controller
                 return $btn;
 
             })
-            ->rawColumns(['nama_barang','tanggal_bayar','sisa_bayar','keterangan_histori','aksi'])
+            ->rawColumns(['nama_barang','tanggal_bayar','saldo_histori','sisa_bayar','keterangan_histori','aksi'])
             ->make(true);
         }
 
@@ -206,6 +230,25 @@ class CreditController extends Controller
             return response()->json(['error'=>'Data gagal dihapus']);
 
         }
+    }
 
+    public function PrintCredit($from_date, $to_date){
+
+        $credit = Credit::whereBetween('tanggal_beli',[$from_date, $to_date])->latest()->get();
+        $sum = $credit->sum('gaji');
+
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        return view('extend.print_Credit', compact('credit', 'today', 'sum'));
+    }
+
+    public function PrintCreditHistory($from_date, $to_date){
+
+        $history = HistoryCredit::whereBetween('tanggal_histori',[$from_date, $to_date])->latest()->get();
+        $sum = $history->sum('gaji');
+
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        return view('extend.print_Credit_History', compact('history', 'today', 'sum'));
     }
 }

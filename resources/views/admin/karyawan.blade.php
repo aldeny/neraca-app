@@ -95,6 +95,7 @@
                                         <th>No</th>
                                         <th>Nama</th>
                                         <th>Gaji</th>
+                                        <th>Saldo</th>
                                         <th>Tanggal</th>
                                         <th>Aksi</th>
                                   </tr>
@@ -104,6 +105,7 @@
                                         <th>No</th>
                                         <th>Nama</th>
                                         <th>Gaji</th>
+                                        <th>Saldo</th>
                                         <th>Tanggal</th>
                                         <th>Aksi</th>
                                   </tr>
@@ -135,14 +137,14 @@
                     <div class="form-body">
                         <div class="form-group">
                             <label for="tanggal" class="font-weight-bold">Tanggal</label>
-                            <input type="date" class="form-control" name="tanggal_kar" id="tanggal_kar">
-                            <span class="text-danger" id="tanggal_karError"></span>
+                            <input type="date" class="form-control" name="tanggal" id="tanggal">
+                            <span class="text-danger" id="tanggalError"></span>
                         </div>
                         <div class="form-group">
                             <label for="nama-karyawan" class="font-weight-bold">Nama</label>
                             <input type="hidden" name="id" id="id" class="form-control" value="">
                             <input type="hidden" name="action" id="action" class="form-control">
-                            <input type="text" id="nama_lengkap" class="form-control" name="nama_lengkap" placeholder="Nama Lengkap">
+                            <input type="text" id="nama" class="form-control" name="nama" placeholder="Nama Lengkap">
                             <span class="text-danger" id="namaError"></span>
                         </div>
                         <div class="form-group">
@@ -179,6 +181,16 @@
                                     <span class="text-danger" id="statusError"></span>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="saldo" class="font-weight-bold">Saldo</label>
+                            <select class="form-control" id="saldo" name="saldo">
+                                <option value="">--Pilih Saldo--</option>
+                                <option value="1">Kas Bank</option>
+                                <option value="2">Kas Besar</option>
+                                <option value="3">Kas Kecil</option>
+                            </select>
+                            <span class="text-danger" id="statusError"></span>
                         </div>
                         <div class="form-group">
                             <label for="upah-gaji" class="font-weight-bold">Gaji Pokok</label>
@@ -308,11 +320,13 @@
             },
                 {data: 'nama', name: 'nama'},
                 {data: 'gaji', name: 'gaji'},
+                {data: 'saldo', name: 'saldo'},
                 {data: 'created_at', name: 'created_at'},
                 {data: 'aksi', name: 'aksi'},
             ]
         });
     })
+
 
     /* FUnction Tambah */
     $(document).on('click', '#btn-add', function () {
@@ -321,12 +335,13 @@
         $('.btn-action').html('Simpan');
 
         $('#id').val('');
-        $('#nama_lengkap').val('');
-        $('#tanggal_kar').val('');
+        $('#nama').val('');
+        $('#tanggal').val('');
         $('#jabatan').val('');
         $('#jenis_kelamin').val('');
         $('#status').val('');
         $('#gaji').val('');
+        document.getElementById("saldo").disabled = true;
         $('#action').val('tambah');
     });
 
@@ -339,11 +354,12 @@
         $('.btn-action').html('Bayar');
 
         $('#id').val('');
-        $('#tanggal_kar').val('');
-        document.getElementById("nama_lengkap").readOnly = true;
+        $('#tanggal').val('');
+        document.getElementById("nama").readOnly = true;
         document.getElementById("jabatan").readOnly = true;
         document.getElementById("jenis_kelamin").disabled = true;
         document.getElementById("status").disabled = true;
+        document.getElementById("saldo").disabled = false;
         document.getElementById("gaji").readOnly = true;
         $('#action').val('bayar');
 
@@ -352,8 +368,8 @@
             dataType: "json",
             success: function (html) {
                 $("#id").val(html.emplo.id);
-                $("#tanggal_kar").val(html.emplo.tanggal);
-                $('#nama_lengkap').val(html.emplo.nama);
+                $("#tanggal").val('');
+                $('#nama').val(html.emplo.nama);
                 $('[name="jenis_kelamin"] option[value="'+html.emplo.jenis_kelamin+'"]').prop('selected', true);
                 $('[name="status"] option[value="'+html.emplo.status+'"]').prop('selected', true);
                 $("#e2 option:selected").text();
@@ -373,12 +389,13 @@
         $('.btn-action').html('Update');
 
         $('#id').val('');
-        $('#nama_lengkap').val('');
-        $('#tanggal_kar').val('');
+        $('#nama').val('');
+        $('#tanggal').val('');
         $('#jabatan').val('');
         $('#jenis_kelamin').val('');
         $('#status').val('');
         $('#gaji').val('');
+        document.getElementById("saldo").disabled = true;
         $('#action').val('edit');
 
         $.ajax({
@@ -386,8 +403,8 @@
             dataType: "json",
             success: function (html) {
                 $("#id").val(html.emplo.id);
-                $('#nama_lengkap').val(html.emplo.nama);
-                $('#tanggal_kar').val(html.emplo.tanggal);
+                $('#nama').val(html.emplo.nama);
+                $('#tanggal').val(html.emplo.tanggal);
                 $('[name="jenis_kelamin"] option[value="'+html.emplo.jenis_kelamin+'"]').prop('selected', true);
                 $('[name="status"] option[value="'+html.emplo.status+'"]').prop('selected', true);
                 $("#e2 option:selected").text();
@@ -451,7 +468,7 @@
                 },
                 error: function (error) {
                     $('#namaError').text(error.responseJSON.errors.nama);
-                    $('#tanggal_karError').text(error.responseJSON.errors.tanggal);
+                    $('#tanggalError').text(error.responseJSON.errors.tanggal);
                     $('#jabatanError').text(error.responseJSON.errors.jabatan);
                     $('#jenis_kelaminError').text(error.responseJSON.errors.jenis_kelamin);
                     $('#statusError').text(error.responseJSON.errors.status);

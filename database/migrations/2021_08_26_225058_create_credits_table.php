@@ -20,6 +20,7 @@ class CreateCreditsTable extends Migration
             $table->integer('harga');
             $table->integer('jumlah_bayar');
             $table->integer('sisa');
+            $table->string('saldo');
             $table->string('ket_bayar')->nullable();
             $table->timestamps();
         });

@@ -95,13 +95,26 @@
                 <span class="info-box-icon bg-success"><i class="fas fa-money-check-alt"></i></span>
                 <div class="info-box-content">
                 <span class="info-box-text">Pendapatan</span>
-                <span class="info-box-number">{{ $cuan}}</span>
+                <span class="info-box-number">{{ $cuan }}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
         <!-- /.info-box -->
         </div>
         <!-- /.col -->
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="info-box bg-gradient-gray-dark">
+                <span class="info-box-icon bg-warning"><i class="fas fa-chart-line"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text text-white">Credit/Piutang</span>
+                    <span class="info-box-number text-warning mb-3">{{ $piutang }}</span>
+                    <a href="{{ route('credit.index') }}" class="btn btn-sm btn-info small-box-footer text-white">Lihat detail <i class="fas fa-arrow-circle-right"></i></a>
+                    <!-- /.info-box-content -->
+                </div>
+            </div>
+        </div>
     </div>
     {{-- End Card Ringkasan --}}
     </div>

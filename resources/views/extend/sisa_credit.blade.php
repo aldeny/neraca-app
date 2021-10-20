@@ -20,6 +20,11 @@
                         <td id="sisaTanggalBeli" class="font-weight-bold"></td>
                     </tr>
                     <tr>
+                        <td class="w-25">Saldo</td>
+                        <td style="width: 0">:</td>
+                        <td id="sisaSaldo" class="font-weight-bold"></td>
+                    </tr>
+                    <tr>
                         <td class="w-25">Harga</td>
                         <td style="width: 0">:</td>
                         <td id="sisaHarga" class="font-weight-bold"></td>
@@ -61,10 +66,26 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="keterangan-bayar" class="font-weight-bold">Keterangan</label>
-                            <textarea class="form-control" name="ket_bayar_sisa" id="ket_bayar_sisa" placeholder="Keterangan"></textarea>
-                            <span class="text-danger" id="ket_bayar_sisaError"></span>
+                        <div class="form-row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="saldo" class="font-weight-bold">Saldo</label>
+                                    <select class="custom-select" name="saldo_histori" id="saldo_histori">
+                                        <option value="">--Pilih Kondisi--</option>
+                                        <option value="1">Saldo Kas Bank</option>
+                                        <option value="2">Saldo Kas Besar</option>
+                                        <option value="3">Saldo Kas Kecil</option>
+                                    </select>
+                                    <span class="text-danger error-text saldo_error"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="keterangan-bayar" class="font-weight-bold">Keterangan</label>
+                                    <textarea class="form-control" name="ket_bayar_sisa" id="ket_bayar_sisa" placeholder="Keterangan"></textarea>
+                                    <span class="text-danger" id="ket_bayar_sisaError"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
