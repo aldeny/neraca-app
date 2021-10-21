@@ -6,6 +6,7 @@ use App\Models\Bank;
 use App\Models\Buy;
 use App\Models\Cash;
 use App\Models\Credit;
+use App\Models\HistoryCredit;
 use App\Models\Sell;
 use Carbon\Carbon;
 use DateTime;
@@ -19,17 +20,20 @@ class MainController extends Controller
     {
         $bank = Cash::where('sumber_dana', '=', 'Kas Bank')->sum('jumlah');
         $buy = Buy::where('saldo', '=', 1)->sum('total');
-        $result = $bank-$buy;
+        $creditsisa = HistoryCredit::where('saldo_histori', '=', 1)->sum('sisa_bayar');
+        $result = $bank-$buy-$creditsisa;
         $coun_bank = "Rp. ".number_format($result,0,',','.');
 
         $kas_besar = Cash::where('sumber_dana', '=', 'Kas Besar')->sum('jumlah');
         $buy_besar = Buy::where('saldo', '=', 2)->sum('total');
-        $result_besar = $kas_besar - $buy_besar;
+        $creditsisaBesar = HistoryCredit::where('saldo_histori', '=', 2)->sum('sisa_bayar');
+        $result_besar = $kas_besar - $buy_besar - $creditsisaBesar;
         $coun_besar = "Rp. ".number_format($result_besar,0,',','.');
 
         $kas_kecil = Cash::where('sumber_dana', '=', 'Kas Kecil')->sum('jumlah');
         $buy_kecil = Buy::where('saldo', '=', 3)->sum('total');
-        $result_kecil = $kas_kecil - $buy_kecil;
+        $creditsisaKecil = HistoryCredit::where('saldo_histori', '=', 3)->sum('sisa_bayar');
+        $result_kecil = $kas_kecil - $buy_kecil - $creditsisaKecil;
         $coun_kecil = "Rp. ".number_format($result_kecil,0,',','.');
 
         $saldo_buy = Buy::all()->sum('total');
@@ -54,7 +58,8 @@ class MainController extends Controller
     {
         $count = Cash::where('sumber_dana', '=', 'Kas Bank')->sum('jumlah');
         $buy = Buy::where('saldo', '=', 1)->sum('total');
-        $result = $count - $buy;
+        $creditsisa = HistoryCredit::where('saldo_histori', '=', 1)->sum('sisa_bayar');
+        $result = $count - $buy - $creditsisa;
         $bank = Bank::all();
         $coun = "Rp. ".number_format($result,0,',','.');
         return view('admin.kas_bank', ['count' => $coun, 'bank' => $bank]);
@@ -170,7 +175,8 @@ class MainController extends Controller
     public function getIndexKasBesar(){
         $count = Cash::where('sumber_dana', '=', 'Kas Besar')->sum('jumlah');
         $buy = Buy::where('saldo', '=', 2)->sum('total');
-        $result = $count - $buy;
+        $creditsisaBesar = HistoryCredit::where('saldo_histori', '=', 2)->sum('sisa_bayar');
+        $result = $count - $buy - $creditsisaBesar;
         $bank = Bank::all();
         $coun = "Rp. ".number_format($result,0,',','.');
         return view('admin.kas_besar', ['count' => $coun, 'bank' => $bank]);
@@ -228,7 +234,9 @@ class MainController extends Controller
     public function getIndexKasKecil(){
         $count = Cash::where('sumber_dana', '=', 'Kas Kecil')->sum('jumlah');
         $buy = Buy::where('saldo', '=', 3)->sum('total');
-        $result = $count - $buy;
+        $creditsisaKecil = HistoryCredit::where('saldo_histori', '=', 3)->sum('sisa_bayar');
+
+        $result = $count - $buy - $creditsisaKecil;
         $bank = Bank::all();
         $coun = "Rp. ".number_format($result,0,',','.');
         return view('admin.kas_kecil', ['count' => $coun, 'bank' => $bank]);

@@ -110,7 +110,7 @@ class CreditController extends Controller
 
                             <div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
                             <a class='dropdown-item btn-sisa' type='button' data-id='".$data->id."'>Bayar Sisa</a>
-                            <a class='dropdown-item btn-edit' type='button' data-id='".$data->id."'>Edit</a>
+
                             <a class='dropdown-item btn-delete' type='button' data-id='".$data->id."'>Hapus</a>
                             </div>
                         </div>";
