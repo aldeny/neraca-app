@@ -27,6 +27,15 @@ class BuyController extends Controller
             'harga_beli' => 'required',
             'total' => 'required',
             'keterangan' => 'required',
+        ],
+        [
+            'nama_item.required' => 'Nama produk tidak boleh kosong',
+            'tanggal_beli.required' => 'Tanggal beli tidak boleh kosong',
+            'jumlah_item.required' => 'Jumlah produk tidak boleh kosong',
+            'saldo.required' => 'Saldo tidak boleh kosong',
+            'harga_beli.required' => 'Harga beli tidak boleh kosong',
+            'total.required' => 'Total tidak boleh kosong',
+            'keterangan.required' => 'Keterangan produk tidak boleh kosong',
         ]);
 
         $save = new Buy;

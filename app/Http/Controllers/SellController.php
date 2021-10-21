@@ -25,6 +25,14 @@ class SellController extends Controller
             'total' => 'required',
             'tanggal_jual' => 'required',
             'keterangan' => 'required',
+        ],
+        [
+            'nama_barang.required' => 'Nama barang tidak boleh kosong',
+            'jumlah_item.required' => 'Jumlah barang tidak boleh kosong',
+            'harga_jual.required' => 'Harga jual tidak boleh kosong',
+            'total.required' => 'required',
+            'tanggal_jual.required' => 'Tanggal jual tidak boleh kosong',
+            'keterangan.required' => 'Keterangan tidak boleh kosong',
         ]);
 
         $save = new Sell;

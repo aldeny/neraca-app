@@ -53,8 +53,10 @@ class MainController extends Controller
     public function getIndexKasBank()
     {
         $count = Cash::where('sumber_dana', '=', 'Kas Bank')->sum('jumlah');
+        $buy = Buy::where('saldo', '=', 1)->sum('total');
+        $result = $count - $buy;
         $bank = Bank::all();
-        $coun = "Rp. ".number_format($count,0,',','.');
+        $coun = "Rp. ".number_format($result,0,',','.');
         return view('admin.kas_bank', ['count' => $coun, 'bank' => $bank]);
     }
 
@@ -68,6 +70,14 @@ class MainController extends Controller
             'bank_id' => 'required',
             'jumlah' => 'required',
             'keterangan' => 'required',
+        ],
+        [
+            'tanggal.required' => 'Tanggal tidak boleh kosong',
+            'dana.required' => 'Dana tidak boleh kosong',
+            'sumber_dana.required' => 'Sumber dana tidak boleh kosong',
+            'bank_id.required' => 'Bank tidak boleh kosong',
+            'jumlah.required' => 'Jumlah tidak boleh kosong',
+            'keterangan.required' => 'Keterangan tidak boleh kosong',
         ]);
 
         // Insert into database
@@ -159,8 +169,10 @@ class MainController extends Controller
     /* Kas Besar */
     public function getIndexKasBesar(){
         $count = Cash::where('sumber_dana', '=', 'Kas Besar')->sum('jumlah');
+        $buy = Buy::where('saldo', '=', 2)->sum('total');
+        $result = $count - $buy;
         $bank = Bank::all();
-        $coun = "Rp. ".number_format($count,0,',','.');
+        $coun = "Rp. ".number_format($result,0,',','.');
         return view('admin.kas_besar', ['count' => $coun, 'bank' => $bank]);
     }
 
@@ -213,11 +225,12 @@ class MainController extends Controller
     }
 
     /* Kas Kecil */
-    /* Kas Besar */
     public function getIndexKasKecil(){
         $count = Cash::where('sumber_dana', '=', 'Kas Kecil')->sum('jumlah');
+        $buy = Buy::where('saldo', '=', 3)->sum('total');
+        $result = $count - $buy;
         $bank = Bank::all();
-        $coun = "Rp. ".number_format($count,0,',','.');
+        $coun = "Rp. ".number_format($result,0,',','.');
         return view('admin.kas_kecil', ['count' => $coun, 'bank' => $bank]);
     }
 

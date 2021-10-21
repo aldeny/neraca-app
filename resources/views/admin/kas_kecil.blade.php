@@ -95,14 +95,11 @@
             <label for="tanggal" class="font-weight-bold">Tanggal</label>
             <input type="hidden" name="id" id="id" class="form-control" value="">
             <input type="hidden" name="action" id="action" class="form-control">
-            <input type="date" id="tanggal" class="form-control" name="tanggal" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Tanggal Input" data-original-title="" title="">
+            <input type="date" id="tanggal" class="form-control" name="tanggal">
+            <span class="text-danger" id="tanggalError"></span>
           </div>
           <div class="form-group">
             <label for="dana" class="font-weight-bold">Dana</label>
-            {{-- <select id="dana" name="dana" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Dana" data-original-title="" title="">
-            <option value="1">Masuk</option>
-            <option value="2">Keluar</option>
-            </select> --}}
             <input type="text" class="form-control" id="dana" name="dana" data-placement="top" data-title="Dana" value="masuk" readonly>
           </div>
           <div class="form-group">
@@ -117,22 +114,19 @@
                 <option value="{{ $dt->id }}">{{ $dt->nama_bank }}</option>
               @endforeach
             </select>
+            <span class="text-danger" id="bank_idError"></span>
           </div>
           <div class="form-group">
             <label for="projectinput1" class="font-weight-bold">Jumlah</label>
             <div class="input-group">
-              {{-- <div class="input-group-prepend">
-              <span class="input-group-text">Rp.</span>
-              </div> --}}
-              <input type="text" class="form-control jum" type-currency="IDR" placeholder="Jumlah" aria-label="Amount (to the nearest dollar)" name="jumlah">
-              {{-- <div class="input-group-append">
-              <span class="input-group-text">.00</span>
-              </div> --}}
+              <input type="text" class="form-control jum" type-currency="IDR" placeholder="Jumlah" aria-label="Amount (to the nearest dollar)" name="jumlah" id="jumlah">
             </div>
+            <span class="text-danger" id="jumlahError"></span>
           </div>
           <div class="form-group">
             <label for="keterangan" class="font-weight-bold">Keterangan</label>
             <textarea id="keterangan" rows="5" class="form-control" name="keterangan" placeholder="Keterangan" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="keterangan" data-original-title="" title=""></textarea>
+            <span class="text-danger" id="keteranganError"></span>
           </div>
         </div>
         </div>
@@ -282,10 +276,17 @@
             //$("#action").val("");
             $("#id").val("");
             $('#modal-add').modal('hide');
-        },
-        error : function (data) {
-          //alert(data);
-        }
+            $('#tanggalError').text('');
+            $('#bank_idError').text('');
+            $('#jumlahError').text('');
+            $('#keteranganError').text('');
+            },
+            error : function (er) {
+                $('#tanggalError').text(er.responseJSON.errors.tanggal);
+                $('#bank_idError').text(er.responseJSON.errors.bank_id);
+                $('#jumlahError').text(er.responseJSON.errors.jumlah);
+                $('#keteranganError').text(er.responseJSON.errors.keterangan);
+            }
       });
     }
   });

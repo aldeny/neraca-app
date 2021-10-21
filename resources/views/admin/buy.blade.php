@@ -83,30 +83,34 @@
                         <div class="form-group">
                             <label for="tanggal" class="font-weight-bold">Tanggal Beli</label>
                             <input type="date" class="form-control" id="tanggal_beli" name="tanggal_beli">
+                            <span class="text-danger" id="tanggal_beliError"></span>
                         </div>
                         <div class="form-group">
                             <label for="nama_item" class="font-weight-bold">Nama Produk</label>
                             <input type="hidden" name="id" id="id" class="form-control" value="">
                             <input type="hidden" name="action" id="action" class="form-control">
-                            <select id="nama_item" name="nama_item" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Nama Item" data-original-title="" title="">
+                            <select id="nama_item" name="nama_item" class="form-control">
                                 <option value="">Pilih Produk</option>
                                 @foreach ($product as $prdct)
                                     <option value="{{ $prdct->id }}">{{ $prdct->nama_produk }}</option>
                                 @endforeach
                             </select>
+                            <span class="text-danger" id="nama_itemError"></span>
                         </div>
                         <div class="form-group">
                             <label for="jumlah" class="font-weight-bold">Jumlah Produk</label>
-                            <input type="number" class="form-control" id="jumlah_item" name="jumlah_item" data-placement="top" data-title="Jumlah Item" placeholder="Jumlah Produk">
+                            <input type="number" class="form-control" id="jumlah_item" name="jumlah_item" placeholder="Jumlah Produk">
+                            <span class="text-danger" id="jumlah_itemError"></span>
                         </div>
                         <div class="form-group">
                             <label for="from_saldo" class="font-weight-bold">Dari Saldo</label>
-                            <select id="saldo" name="saldo" class="form-control" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="Bank" data-original-title="" title="">
+                            <select id="saldo" name="saldo" class="form-control">
                                 <option value="">Pilih Saldo</option>
                                 <option value="1">Saldo Kas Bank</option>
                                 <option value="2">Saldo Kas Besar</option>
                                 <option value="3">Saldo Kas Kecil</option>
                             </select>
+                            <span class="text-danger" id="saldoError"></span>
                         </div>
                         <div class="row">
                            <div class="col-lg-6">
@@ -114,18 +118,21 @@
                                     <label for="herga" class="font-weight-bold">Harga Beli</label>
                                     <input type="number" class="form-control" name="harga_beli" id="harga_beli" placeholder="Harga Beli">
                                 </div>
+                                <span class="text-danger" id="harga_beliError"></span>
                            </div>
                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="total" class="font-weight-bold">Total</label>
                                     <input type="text" class="form-control jum" aria-label="Amount (to the nearest dollar)" type-currency="IDR" name="total" id="total" readonly>
                                 </div>
+                                <span class="text-danger" id="totalError"></span>
                            </div>
                        </div>
                         <div class="form-group">
                             <label for="keterangan" class="font-weight-bold">Keterangan</label>
-                            <textarea id="keterangan" rows="5" class="form-control" name="keterangan" placeholder="Keterangan" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="keterangan" data-original-title="" title=""></textarea>
+                            <textarea id="keterangan" rows="5" class="form-control" name="keterangan" placeholder="Keterangan"></textarea>
                         </div>
+                        <span class="text-danger" id="keteranganError"></span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -287,6 +294,22 @@
                         //$("#action").val("");
                         $("#id").val("");
                         $('#modal-add').modal('hide');
+                        $('#tanggal_beliError').text('');
+                        $('#nama_itemError').text('');
+                        $('#jumlah_itemError').text('');
+                        $('#saldoError').text('');
+                        $('#harga_beliError').text('');
+                        $('#totalError').text('');
+                        $('#keteranganError').text('');
+                        },
+                        error : function (er) {
+                            $('#tanggal_beliError').text(er.responseJSON.errors.tanggal_beli);
+                            $('#nama_itemError').text(er.responseJSON.errors.product_id);
+                            $('#jumlah_itemError').text(er.responseJSON.errors.jumlah_item);
+                            $('#saldoError').text(er.responseJSON.errors.saldo);
+                            $('#harga_beliError').text(er.responseJSON.errors.harga_beli);
+                            $('#totalError').text(er.responseJSON.errors.total);
+                            $('#keteranganError').text(er.responseJSON.errors.keterangan);
                         }
             });
         }

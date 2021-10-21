@@ -175,7 +175,7 @@
                                 <div class="form-group">
                                     <label for="saldo" class="font-weight-bold">Saldo</label>
                                     <select class="custom-select" name="saldo" id="saldo">
-                                        <option value="">--Pilih Kondisi--</option>
+                                        <option value="">--Pilih Saldo--</option>
                                         <option value="1">Saldo Kas Bank</option>
                                         <option value="2">Saldo Kas Besar</option>
                                         <option value="3">Saldo Kas Kecil</option>

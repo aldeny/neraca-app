@@ -80,6 +80,7 @@
                         <div class="form-group">
                             <label for="tanggal" class="font-weight-bold">Tanggal Jual</label>
                             <input type="date" class="form-control" id="tanggal_jual" name="tanggal_jual">
+                            <span class="text-danger" id="tanggal_jualError"></span>
                         </div>
                         <div class="form-row">
                             <div class="col-9">
@@ -93,6 +94,7 @@
                                             <option value="{{ $prdct->id }}">{{ $prdct->nama_produk }}</option>
                                         @endforeach
                                     </select>
+                                    <span class="text-danger" id="nama_barangError"></span>
                                 </div>
                             </div>
                             <div class="col-3">
@@ -106,12 +108,14 @@
                                     <label for="jumlah_barang" class="font-weight-bold">Jumlah Barang Dijual</label>
                                     <input type="number" class="form-control" id="jumlah_item" name="jumlah_item" data-placement="top" data-title="Jumlah Barang">
                                 </div>
+                                <span class="text-danger" id="jumlah_itemError"></span>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label for="harga" class="font-weight-bold">Harga</label>
                                     <input type="number" class="form-control" id="harga_jual" name="harga_jual" data-placement="top" data-title="Harga">
                                 </div>
+                                <span class="text-danger" id="harga_jualError"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -124,6 +128,7 @@
                             <label for="keterangan" class="font-weight-bold">Keterangan</label>
                             <textarea id="keterangan" rows="5" class="form-control" name="keterangan" placeholder="Keterangan" data-toggle="tooltip" data-trigger="hover" data-placement="top" data-title="keterangan" data-original-title="" title=""></textarea>
                         </div>
+                        <span class="text-danger" id="keteranganError"></span>
                     </div>
             </div>
                     <div class="modal-footer">
@@ -242,7 +247,7 @@
 		/* FUnction Tambah */
 		$(document).on('click', '#btn-add', function () {
 				$('#modal-add').modal('show');
-				$('#modal-title').html('Tambah Data Aset');
+				$('#modal-title').html('Tambah Data Penjualan');
 				$('.btn-action').html('Simpan');
 
 				$('#id').val('');
@@ -260,48 +265,60 @@
 				event.preventDefault();
 
 				/* Jika simpan */
-				if ($('#action').val() == "tambah") {
-						$.ajax({
-								method: "POST",
-								url: "{{ route('sell.add.data') }}",
-								data: new FormData(this),
-								dataType: 'json',
-								contentType: false,
-								cache: false,
-								processData: false,
-								success: function (data) {
-										$('#tbl_sell').DataTable().ajax.reload();
-												if(data.success){
-                                                    const Toast = Swal.mixin({
-                                                    toast: true,
-                                                    position: 'top',
-                                                    showConfirmButton: false,
-                                                    timer: 3000,
-                                                    timerProgressBar: true,
-                                                    didOpen: (toast) => {
-                                                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                                    }
-                                                })
+            if ($('#action').val() == "tambah") {
+                $.ajax({
+                    method: "POST",
+                    url: "{{ route('sell.add.data') }}",
+                    data: new FormData(this),
+                    dataType: 'json',
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        $('#tbl_sell').DataTable().ajax.reload();
+                            if(data.success){
+                                const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
 
-                                                    Toast.fire({
-                                                        icon: 'success',
-                                                        title: data.success
-                                                    });
-												}
-												if(data.error){
-                                                    Toast.fire({
-                                                        icon: 'error',
-                                                        title: data.error
-                                                    });
-												}
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: data.success
+                                });
+                            }
+                            if(data.error){
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: data.error
+                                });
+                            }
 
-												//$("#action").val("");
-												$("#id").val("");
-												$('#modal-add').modal('hide');
-												}
-						});
-				}
+                            //$("#action").val("");
+                            $("#id").val("");
+                            $('#modal-add').modal('hide');
+                            $('#tanggal_jualError').text('');
+                            $('#nama_barangError').text('');
+                            $('#jumlah_itemError').text('');
+                            $('#harga_jualError').text('');
+                            $('#keteranganError').text('');
+                            },
+                            error : function (er) {
+                                $('#tanggal_jualError').text(er.responseJSON.errors.tanggal_jual);
+                                $('#nama_barangError').text(er.responseJSON.errors.product_id);
+                                $('#jumlah_itemError').text(er.responseJSON.errors.jumlah_item);
+                                $('#harga_jualError').text(er.responseJSON.errors.harga_jual);
+                                $('#keteranganError').text(er.responseJSON.errors.keterangan);
+                            }
+                });
+            }
 		});
 
 		$(document).on('click', '.btn-delete', function () {
