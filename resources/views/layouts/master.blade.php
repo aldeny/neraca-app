@@ -250,13 +250,12 @@
                     </a>
                 </li>
 
-                <li class="nav-header">Laporan</li>
+                <li class="nav-header">Laporan Keseluruhan</li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link ">
+                    <a href="{{ route('cashReport') }}" target="_blank" class="nav-link ">
                         <i class="fas fa-file-pdf nav-icon"></i>
                         <p>
-                        Produk
-                        <span class="right badge badge-danger">Belum</span>
+                        Export Neraca
                         </p>
                     </a>
                 </li>

@@ -11,6 +11,7 @@ use App\Models\Sell;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
+use Dompdf\Dompdf;
 
 
 class MainController extends Controller
@@ -318,5 +319,27 @@ class MainController extends Controller
         $today = Carbon::now()->isoFormat('D MMMM Y');
 
         return view('extend.print_Kecil', compact('cetak_KB', 'today', 'sum'));
+    }
+
+    public function export()
+    {
+        $cash = Cash::all();
+        $total = $cash->sum('jumlah');
+
+        $view = view('exports.cash_export', compact('cash','total'));
+
+        return $view;
+
+        /* $dompdf = new Dompdf();
+        $dompdf->loadHtml($view);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream(); */
     }
 }
