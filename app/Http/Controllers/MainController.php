@@ -326,11 +326,13 @@ class MainController extends Controller
         $cash = Cash::all();
         $total = $cash->sum('jumlah');
 
-        $view = view('exports.cash_export', compact('cash','total'));
+        $today = Carbon::now()->isoFormat('D MMMM Y');
 
-        return $view;
+        $view = view('exports.cash_export', compact('cash','total','today'));
 
-        /* $dompdf = new Dompdf();
+        //return $view;
+
+        $dompdf = new Dompdf();
         $dompdf->loadHtml($view);
 
         // (Optional) Setup the paper size and orientation
@@ -340,6 +342,6 @@ class MainController extends Controller
         $dompdf->render();
 
         // Output the generated PDF to Browser
-        $dompdf->stream(); */
+        $dompdf->stream();
     }
 }

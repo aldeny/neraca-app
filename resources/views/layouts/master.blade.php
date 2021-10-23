@@ -252,10 +252,34 @@
 
                 <li class="nav-header">Laporan Keseluruhan</li>
                 <li class="nav-item">
-                    <a href="{{ route('cashReport') }}" target="_blank" class="nav-link ">
+                    <a href="{{ route('cashReport') }}" class="nav-link ">
                         <i class="fas fa-file-pdf nav-icon"></i>
                         <p>
                         Export Neraca
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('buyReport') }}" target="_blank" class="nav-link ">
+                        <i class="fas fa-file-pdf nav-icon"></i>
+                        <p>
+                        Export Pembelian
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('sellReport') }}" target="_blank" class="nav-link ">
+                        <i class="fas fa-file-pdf nav-icon"></i>
+                        <p>
+                        Export Penjualan
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('asetReport') }}" target="_blank" class="nav-link ">
+                        <i class="fas fa-file-pdf nav-icon"></i>
+                        <p>
+                        Export Aset
                         </p>
                     </a>
                 </li>

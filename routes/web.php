@@ -130,3 +130,6 @@ Route::get('/print/credit/{from_date}/{to_date}', [CreditController::class, 'Pri
 Route::get('/print/creditHistory/{from_date}/{to_date}', [CreditController::class, 'PrintCreditHistory'])->name('print.credit.history');
 
 Route::get('/print/cashAll', [MainController::class, 'export'])->name('cashReport');
+Route::get('/print/buyAll', [BuyController::class, 'exportBuy'])->name('buyReport');
+Route::get('/print/sellAll', [SellController::class, 'exportSell'])->name('sellReport');
+Route::get('/print/asetAll', [AssetsController::class, 'exportAset'])->name('asetReport');

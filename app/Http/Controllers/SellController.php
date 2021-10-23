@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use DateTime;
+use Dompdf\Dompdf;
 
 class SellController extends Controller
 {
@@ -141,5 +142,29 @@ class SellController extends Controller
         $today = Carbon::now()->isoFormat('D MMMM Y');
 
         return view('extend.print_Sell', compact('sell', 'today', 'sum'));
+    }
+
+    public function exportSell()
+    {
+        $sell = Sell::latest()->get();
+        $total = $sell->sum('total');
+
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        $view = view('exports.sell_export', compact('sell','total','today'));
+
+        //return $view;
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($view);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream();
     }
 }

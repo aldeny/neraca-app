@@ -21,7 +21,7 @@
 
     <body>
         <center>
-            <h1>LAPORAN KESELURUHAN NERACA</h1>
+            <h1>LAPORAN KESELURUHAN PEMBELIAN</h1>
         </center>
 
         <h5>Tanggal: {{ $today }}</h5>
@@ -30,28 +30,38 @@
             <tr>
                 <th>No</th>
                 <th>Tanggal</th>
-                <th>Sumber Dana</th>
-                <th>Bank</th>
-                <th>Dana</th>
-                <th>Jumlah</th>
+                <th>Nama Barang</th>
+                <th>Jumlah Barang</th>
+                <th>Saldo</th>
+                <th>Harga Beli</th>
+                <th>Total</th>
                 <th>Keterangan</th>
             </tr>
             @php
                 $no = 1;
             @endphp
-            @foreach($cash as $data)
+            @foreach($buy as $data)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ date('d-m-Y', strtotime($data->tanggal)) }}</td>
-                    <td>{{ $data->sumber_dana }}</td>
-                    <td>{{ $data->Bank->nama_bank }}</td>
-                    <td>{{ $data->dana }}</td>
-                    <td>Rp. {{ number_format($data->jumlah,0,',','.') }}</td>
+                    <td>{{ date('d-m-Y', strtotime($data->tanggal_beli)) }}</td>
+                    <td>{{ $data->Product->nama_produk }}</td>
+                    <td>{{ $data->jumlah_item}}</td>
+
+                    @if ($data->saldo == 1)
+                        <td>Saldo Bank</td>
+                    @elseif ($data->saldo == 2)
+                        <td>Saldo Besar</td>
+                    @else
+                        <td>Saldo Kecil</td>
+                    @endif
+
+                    <td>Rp. {{ number_format($data->harga_beli,0,',','.') }}</td>
+                    <td>Rp. {{ number_format($data->total   ,0,',','.') }}</td>
                     <td>{{ $data->keterangan }}</td>
                 </tr>
             @endforeach
                 <tr>
-                    <td colspan="5" center><b><center>TOTAL</center></b></td>
+                    <td colspan="6" center><b><center>TOTAL</center></b></td>
                     <td colspan="2"><b> Rp. {{ number_format($total,0,',','.') }}</b></td>
                 </tr>
         </table>

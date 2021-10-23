@@ -21,7 +21,7 @@
 
     <body>
         <center>
-            <h1>LAPORAN KESELURUHAN NERACA</h1>
+            <h1>LAPORAN KESELURUHAN PENJUALAN</h1>
         </center>
 
         <h5>Tanggal: {{ $today }}</h5>
@@ -30,23 +30,23 @@
             <tr>
                 <th>No</th>
                 <th>Tanggal</th>
-                <th>Sumber Dana</th>
-                <th>Bank</th>
-                <th>Dana</th>
-                <th>Jumlah</th>
+                <th>Nama Barang</th>
+                <th>Jumlah Barang</th>
+                <th>Harga Beli</th>
+                <th>Total</th>
                 <th>Keterangan</th>
             </tr>
             @php
                 $no = 1;
             @endphp
-            @foreach($cash as $data)
+            @foreach($sell as $data)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ date('d-m-Y', strtotime($data->tanggal)) }}</td>
-                    <td>{{ $data->sumber_dana }}</td>
-                    <td>{{ $data->Bank->nama_bank }}</td>
-                    <td>{{ $data->dana }}</td>
-                    <td>Rp. {{ number_format($data->jumlah,0,',','.') }}</td>
+                    <td>{{ date('d-m-Y', strtotime($data->tanggal_jual)) }}</td>
+                    <td>{{ $data->Product->nama_produk }}</td>
+                    <td>{{ $data->jumlah_item}}</td>
+                    <td>Rp. {{ number_format($data->harga_jual,0,',','.') }}</td>
+                    <td>Rp. {{ number_format($data->total   ,0,',','.') }}</td>
                     <td>{{ $data->keterangan }}</td>
                 </tr>
             @endforeach

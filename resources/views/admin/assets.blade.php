@@ -322,12 +322,12 @@
                             name: 'nama_barang'
                         },
                         {
-                            data: 'saldo',
-                            name: 'saldo'
-                        },
-                        {
                             data: 'tanggal_aset',
                             name: 'tanggal_aset'
+                        },
+                        {
+                            data: 'saldo',
+                            name: 'saldo'
                         },
                         {
                             data: 'jumlah_barang',

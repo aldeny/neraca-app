@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
+use Dompdf\Dompdf;
 
 class AssetsController extends Controller
 {
@@ -246,5 +247,29 @@ class AssetsController extends Controller
         $today = Carbon::now()->isoFormat('D MMMM Y');
 
         return view('extend.print_Aset', compact('aset', 'today', 'sum'));
+    }
+
+    public function exportAset()
+    {
+        $aset = Aset::latest()->get();
+        $total = $aset->sum('total');
+
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        $view = view('exports.aset_export', compact('aset','total','today'));
+
+        return $view;
+
+       /*  $dompdf = new Dompdf();
+        $dompdf->loadHtml($view);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream(); */
     }
 }
