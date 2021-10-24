@@ -90,10 +90,7 @@
               <i class="fas fa-cogs"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
-              <a href="#" class="dropdown-item">
-                <i class="fas fa-user"></i> Profile
-              </a>
-              <a href="#" class="dropdown-item">
+              <a href="{{ route('logout') }}" class="dropdown-item">
                 <i class="fas fa-sign-out-alt"></i> Logout
               </a>
             </div>
@@ -280,6 +277,22 @@
                         <i class="fas fa-file-pdf nav-icon"></i>
                         <p>
                         Export Aset
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('creditReport') }}" target="_blank" class="nav-link ">
+                        <i class="fas fa-file-pdf nav-icon"></i>
+                        <p>
+                        Export Credit
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('employeeReport') }}" target="_blank" class="nav-link ">
+                        <i class="fas fa-file-pdf nav-icon"></i>
+                        <p>
+                        Export Pegawai
                         </p>
                     </a>
                 </li>

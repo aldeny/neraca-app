@@ -8,14 +8,68 @@ use App\Models\Cash;
 use App\Models\Credit;
 use App\Models\HistoryCredit;
 use App\Models\Sell;
+use App\Models\User;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 
 class MainController extends Controller
 {
+
+    public function login(){
+        return view('login');
+    }
+
+    public function validateLogin(Request $request){
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required|min:6|max:12'
+        ]);
+
+        $user = User::where('username', '=', $request->username)->first();
+        if (!$user) {
+            Alert::toast('Ops, Sepertinya kamu belum terdaftar', 'error');
+            return back();
+        }
+        else {
+            //check password
+            /* if (Hash::check($request->password, $user->password)) {
+                $request->session()->put('LoggedUser', $user->id);
+                //Alert::toast('Yayy. Kamu berhasil masuk', 'success');
+
+                if ($user->role->id == 1) {
+                    return redirect('/super/index');
+                }
+                if($user->role->id == 2){
+                    return redirect('/super/index');
+                }
+                if($user->role->id == 3){
+                    return redirect('/student/dashboard');
+                }
+
+            }
+            else{
+                Alert::toast('Ops, Password salah', 'error');
+                return back();
+            } */
+
+            if ($request->password == $user->password) {
+                $request->session()->put('LoggedUser', $user->id);
+                //Alert::toast('Yayy. Kamu berhasil masuk', 'success');
+
+                    return redirect('/index');
+
+            }
+            else{
+                Alert::toast('Ops, Password salah', 'error');
+                return back();
+            }
+        }
+    }
 
     public function index()
     {
@@ -343,5 +397,13 @@ class MainController extends Controller
 
         // Output the generated PDF to Browser
         $dompdf->stream();
+    }
+
+    public function logout(){
+        if (session()->has('LoggedUser')) {
+            session()->pull('LoggedUser');
+            Alert::toast('Semoga harimu menyenangkan', 'success');
+            return redirect('login');
+        }
     }
 }

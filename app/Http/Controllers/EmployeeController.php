@@ -8,6 +8,7 @@ use App\Models\Position;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Dompdf\Dompdf;
 
 class EmployeeController extends Controller
 {
@@ -258,5 +259,29 @@ class EmployeeController extends Controller
         $today = Carbon::now()->isoFormat('D MMMM Y');
 
         return view('extend.print_Employee', compact('employee', 'today', 'sum'));
+    }
+
+    public function exportEmployee()
+    {
+        $pegawai = Employee::latest()->get();
+        // $harga = $pegawai->sum('harga');
+
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        $view = view('exports.pegawai_export', compact('pegawai','today'));
+
+        return $view;
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($view);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream();
     }
 }

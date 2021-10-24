@@ -6,6 +6,7 @@ use App\Models\Credit;
 use App\Models\HistoryCredit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Dompdf\Dompdf;
 
 class CreditController extends Controller
 {
@@ -250,5 +251,31 @@ class CreditController extends Controller
         $today = Carbon::now()->isoFormat('D MMMM Y');
 
         return view('extend.print_Credit_History', compact('history', 'today', 'sum'));
+    }
+
+    public function exportCredit()
+    {
+        $credit = Credit::latest()->get();
+        $harga = $credit->sum('harga');
+        $jum = $credit->sum('jumlah_bayar');
+        $sisa = $credit->sum('sisa');
+
+        $today = Carbon::now()->isoFormat('D MMMM Y');
+
+        $view = view('exports.credit_export', compact('credit','harga','jum','sisa','today'));
+
+        //return $view;
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($view);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream();
     }
 }
